@@ -18,13 +18,14 @@ import digitalcreative.web.id.wbmobile_user.view.fragment.PaketFragment;
 public class BaseActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        goToMenuUtama();
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -52,6 +53,11 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void goToMenuUtama(){
+
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container_fragment, homeFragment, "home_fragment").commit();
     }
 }
