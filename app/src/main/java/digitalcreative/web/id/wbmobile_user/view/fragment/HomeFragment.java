@@ -2,14 +2,19 @@ package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.synnapps.carouselview.CarouselView;
 
 import digitalcreative.web.id.wbmobile_user.R;
@@ -21,6 +26,7 @@ public class HomeFragment extends Fragment {
     CarouselView carouselView;
     TextView tv_paket, tv_batch, tv_tanggal;
     DatabaseReference mDatabase;
+
 
     int[] sampleImages = {R.drawable.google, R.drawable.digital_creative, R.drawable.azura_design_new_website1};
 
@@ -34,6 +40,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
+        receiveID();
+        initAction();
 
         return view;
     }
@@ -45,11 +53,33 @@ public class HomeFragment extends Fragment {
     }
 
     private void receiveID(){
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("nobel").child("8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2");
+        String user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("nobel").child(user).child("kursus");
     }
 
     private void initAction(){
-        
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String paket = null, batch = null, tanggal = null;
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                    paket = dataSnapshot1.getKey();
+                    System.out.println(paket);
+                    batch = dataSnapshot1.child("informasi_dasar").child("batch").getValue().toString();
+                    tanggal = dataSnapshot1.child("informasi_dasar").child("tanggal_batch").getValue().toString();
+                }
+//                batch = dataSnapshot.child(paket).child("informasi_dasar").child("batch").getValue().toString();
+//                tanggal = dataSnapshot.child(paket).child("informasi_dasar").child("tanggal_batch").getValue().toString();
+                tv_paket.setText(paket);
+                tv_batch.setText(batch);
+                tv_tanggal.setText(tanggal);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
