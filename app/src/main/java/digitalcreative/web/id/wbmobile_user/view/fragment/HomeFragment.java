@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
 //                batch = dataSnapshot.child(paket).child("informasi_dasar").child("batch").getValue().toString();
 //                tanggal = dataSnapshot.child(paket).child("informasi_dasar").child("tanggal_batch").getValue().toString();
                 tv_paket.setText(paket);
-                tv_batch.setText(batch);
+                tv_batch.setText("Batch "+batch);
                 tv_tanggal.setText(tanggal);
             }
 
