@@ -89,35 +89,15 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp">
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@drawable/rect1">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="14dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1.6"
-                            android:text="Nama Kursus"
-                            android:textColor="#000"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-
-                            />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="24dp"
-                            android:layout_margin="10dp"
-                            android:layout_weight="0.2"
-                            android:gravity="right"
-                            android:src="@drawable/ic_expandable"
-                            />
-
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/rect1">
+                        <Spinner
+                            android:id="@+id/spinner_paket"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/background_spinner"/>
                     </LinearLayout>
 
                     <LinearLayout
