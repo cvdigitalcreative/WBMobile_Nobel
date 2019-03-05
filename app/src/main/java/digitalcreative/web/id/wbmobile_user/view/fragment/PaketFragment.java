@@ -1,6 +1,7 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,12 +26,14 @@ import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.view.adapter.RecyclerView_Adapter;
+import digitalcreative.web.id.wbmobile_user.view.kelas.MateriKursus;
 
 public class PaketFragment extends Fragment {
 
     DatabaseReference mDatabase;
     RecyclerView recyclerView;
     ArrayList<String> batch = new ArrayList<>();
+    List<String> list = new ArrayList<>();
     RecyclerView_Adapter adapter;
     Spinner spinner;
 
@@ -38,7 +41,7 @@ public class PaketFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void initAction(){
+    public void initActionBatch(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("batch");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -56,23 +59,44 @@ public class PaketFragment extends Fragment {
         });
     }
 
+    public void initActionSpinner(){
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String paket = "";
+                MateriKursus mk = new MateriKursus();
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    paket = dataSnapshot1.getKey().toString();
+                    mk.setNamaPaket(paket);
+                    list.add(mk.getNamaPaket());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_paket, container, false);
 
-        initAction();
+        initActionBatch();
+        initActionSpinner();
         recyclerView = view.findViewById(R.id.recyclerView);
         spinner = view.findViewById(R.id.spinner_paket);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new RecyclerView_Adapter(batch);
 
-        List<String> list = new ArrayList<String>();
-        list.add("list 1");
-        list.add("list 2");
-        list.add("list 3");
+//        list.add("list 1");
+//        list.add("list 2");
+//        list.add("list 3");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
