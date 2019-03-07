@@ -33,8 +33,8 @@ public class PaketFragment extends Fragment {
     DatabaseReference mDatabase;
     RecyclerView recyclerView;
     ArrayList<String> batch = new ArrayList<>();
-    List<String> list = new ArrayList<>();
     RecyclerView_Adapter adapter;
+    final List<String> list = new ArrayList<>();
     Spinner spinner;
 
     public PaketFragment() {
@@ -50,6 +50,9 @@ public class PaketFragment extends Fragment {
                     batch.add("Batch "+dataSnapshot1.getKey());
                 }
                 recyclerView.setAdapter(adapter);
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                spinner.setAdapter(dataAdapter);
             }
 
             @Override
@@ -59,7 +62,8 @@ public class PaketFragment extends Fragment {
         });
     }
 
-    public void initActionSpinner(){
+    public List<String> initActionSpinner(){
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,6 +75,9 @@ public class PaketFragment extends Fragment {
                     mk.setNamaPaket(paket);
                     list.add(mk.getNamaPaket());
                 }
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                spinner.setAdapter(dataAdapter);
             }
 
             @Override
@@ -78,6 +85,8 @@ public class PaketFragment extends Fragment {
 
             }
         });
+        System.out.println("loaddatabase " +list);
+        return list;
     }
 
     @Override
@@ -87,20 +96,19 @@ public class PaketFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paket, container, false);
 
         initActionBatch();
-        initActionSpinner();
+        final List<String> list = initActionSpinner();
         recyclerView = view.findViewById(R.id.recyclerView);
         spinner = view.findViewById(R.id.spinner_paket);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new RecyclerView_Adapter(batch);
+        System.out.println("lala "+list);
 
-//        list.add("list 1");
-//        list.add("list 2");
-//        list.add("list 3");
+        try {
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(dataAdapter);
+        } catch (Exception e){
+
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -108,6 +116,7 @@ public class PaketFragment extends Fragment {
                 Toast.makeText(parent.getContext(),
                         "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
                         Toast.LENGTH_SHORT).show();
+                        spinner.setSelection(position);
             }
 
             @Override
