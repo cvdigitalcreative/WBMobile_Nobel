@@ -28,14 +28,16 @@ import java.util.List;
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.view.adapter.RecyclerView_Adapter;
 import digitalcreative.web.id.wbmobile_user.view.kelas.MateriKursus;
-
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class PaketFragment extends Fragment {
 
     DatabaseReference mDatabase, mDatabaseSpinner, mDatabasePaket;
     RecyclerView recyclerView;
     ArrayList<String> batch = new ArrayList<>();
-    List<String> list = new ArrayList<>();
     RecyclerView_Adapter adapter;
+    final List<String> list = new ArrayList<>();
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
 
@@ -78,6 +80,9 @@ public class PaketFragment extends Fragment {
                     batch.add("Batch "+dataSnapshot1.getKey());
                 }
                 recyclerView.setAdapter(adapter);
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                spinner.setAdapter(dataAdapter);
             }
 
             @Override
@@ -110,6 +115,7 @@ public class PaketFragment extends Fragment {
 
             }
         });
+
     }
 
     public void selectedItemSpinner(){
