@@ -133,10 +133,11 @@
                             android:textColor="#000"/>
 
                         <TextView
-                            android:layout_marginTop="5dp"
+                            android:id="@+id/lama_pertemuan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=""/>
+                            android:layout_marginTop="5dp"
+                            android:text="" />
 
                         <View
                             android:layout_width="match_parent"
@@ -152,10 +153,11 @@
                             android:textColor="#000"/>
 
                         <TextView
+                            android:id="@+id/durasi_pertemuan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text=""
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginTop="5dp"
+                            android:text="" />
 
                         <View
                             android:layout_width="match_parent"
@@ -208,19 +210,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/deskripsi_pemesanan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Deskripsi Pemesanan"
-                android:textColor="#000"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:text="Deskripsi Pemesanan"
+                android:textColor="#000" />
 
             <TextView
-                android:layout_margin="10dp"
+                android:id="@+id/harga_paket"
                 android:layout_width="match_parent"
-                android:textColor="#000"
                 android:layout_height="wrap_content"
-                android:text="Harga"/>
+                android:layout_margin="10dp"
+                android:text="Harga"
+                android:textColor="#000" />
 
 
 

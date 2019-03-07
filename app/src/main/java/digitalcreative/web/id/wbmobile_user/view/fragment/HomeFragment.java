@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment {
                 String paket = null, batch = null, tanggal = null;
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                     paket = dataSnapshot1.getKey();
-                    System.out.println(paket);
                     batch = dataSnapshot1.child("informasi_dasar").child("batch").getValue().toString();
                     tanggal = dataSnapshot1.child("informasi_dasar").child("tanggal_batch").getValue().toString();
                 }

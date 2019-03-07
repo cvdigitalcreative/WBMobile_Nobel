@@ -6,6 +6,7 @@ package digitalcreative.web.id.wbmobile_user.view.kelas;
 
 public class MateriKursus {
     private String namaPaket;
+    private String namaPaketReal;
 
     public MateriKursus(){}
 
@@ -24,5 +25,22 @@ public class MateriKursus {
 
     public String getNamaPaket(){
         return namaPaket;
+    }
+
+    public void setNamaPaketReal(String nama){
+        if(nama.equals("Kelas Intesif"))
+            namaPaketReal = "kelas_intensif";
+        else if(nama.equals("Pemrograman Desktop"))
+            namaPaketReal = "pemrograman_dekstop";
+        else if(nama.equals("Pemrograman Mobile"))
+            namaPaketReal = "pemrograman_mobile";
+        else if(nama.equals("Pemrograman Website"))
+            namaPaketReal = "pemrograman_website";
+        else
+            namaPaketReal = "pengenalan_pemrograman";
+    }
+
+    public String getNamaPaketReal(){
+        return namaPaketReal;
     }
 }
