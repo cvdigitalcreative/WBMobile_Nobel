@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
     DatabaseReference mDatabase;
 
 
-    int[] sampleImages = {R.drawable.google, R.drawable.digital_creative, R.drawable.azura_design_new_website1};
+
 
     public HomeFragment() {
         // Required empty public constructor

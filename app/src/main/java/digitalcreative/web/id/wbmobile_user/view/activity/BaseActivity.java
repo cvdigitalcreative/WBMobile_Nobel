@@ -26,6 +26,11 @@ public class BaseActivity extends AppCompatActivity {
         goToMenuUtama();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        setBottomNavigationView(bottomNavigationView);
+
+    }
+
+    private void setBottomNavigationView(BottomNavigationView bottomNavigationView){
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -52,7 +57,6 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     private void goToMenuUtama(){

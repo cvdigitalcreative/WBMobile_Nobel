@@ -6,17 +6,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import digitalcreative.web.id.wbmobile_user.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ModulFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
 
-    public ModulFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 
@@ -25,14 +24,7 @@ public class ModulFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_modul, container, false);
-        init(view);
-
-        return view;
-    }
-
-    public void init(View view){
-
+        return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
 }

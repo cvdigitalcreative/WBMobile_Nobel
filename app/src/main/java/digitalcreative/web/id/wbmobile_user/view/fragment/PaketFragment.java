@@ -63,7 +63,7 @@ public class PaketFragment extends Fragment {
     }
 
     public void init(View view){
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.rv_batch);
         spinner = view.findViewById(R.id.spinner_paket);
         tvDeskripsi = view.findViewById(R.id.deskripsi_paket);
         tvDurasi = view.findViewById(R.id.durasi_pertemuan);
@@ -123,9 +123,9 @@ public class PaketFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(parent.getContext(),
+//                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+//                        Toast.LENGTH_SHORT).show();
                 mkursus.setNamaPaketReal(parent.getItemAtPosition(position).toString());
                 String namaPaketReal = mkursus.getNamaPaketReal();
                 mDatabasePaket = mDatabaseSpinner.child(namaPaketReal);

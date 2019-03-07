@@ -29,7 +29,7 @@
                     android:layout_height="24dp"
                     android:layout_margin="16dp"
                     android:layout_weight="0.2"
-                    android:src="@drawable/ic_home"
+                    android:src="@drawable/ic_arrow_back"
                     />
 
 
@@ -37,25 +37,16 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
+                    android:layout_marginRight="24dp"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1.6"
                     android:gravity="center"
-                    android:text="MODUL"
+                    android:text="REPORTING"
+                    android:inputType="textMultiLine"
                     android:textColor="#fff"
                     android:textSize="16dp"
                     android:textStyle="bold"
 
-                    />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:layout_margin="16dp"
-                    android:layout_weight="0.2"
-                    android:gravity="right"
-                    android:src="@drawable/ic_home"
                     />
 
 
@@ -67,32 +58,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/rect1"
-            android:layout_margin="5dp">
+            android:layout_marginBottom="10dp"
+            android:text="Problem"/>
 
-            <Spinner
-                android:id="@+id/spinner_paket"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/background_spinner"/>
-
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_modul"
-            android:scrollbars="none"
-            android:layout_margin="20dp">
+            android:background="@drawable/rect3"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"/>
 
-        </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Description" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@drawable/rect3"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Report"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textColor="#ffff"
+            android:background="@drawable/rect2"/>
 
     </LinearLayout>
 

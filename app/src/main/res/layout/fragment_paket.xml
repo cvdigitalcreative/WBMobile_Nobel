@@ -89,15 +89,17 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp">
                     <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rect1">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rect1">
+
                         <Spinner
                             android:id="@+id/spinner_paket"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="35dp"
                             android:background="@drawable/background_spinner"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -110,14 +112,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Deskripsi Paket"
-                            android:textColor="#000"/>
+                            />
 
                         <TextView
                             android:layout_marginTop="5dp"
                             android:id="@+id/deskripsi_paket"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=""/>
+                            android:textColor="#000"
+                            android:text=""
+                            android:textSize="16sp"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -130,14 +134,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Lama Pertemuan"
-                            android:textColor="#000"/>
+                            />
 
                         <TextView
                             android:id="@+id/lama_pertemuan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="" />
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="16sp"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -150,14 +156,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="Durasi Pertemuan"
-                            android:textColor="#000"/>
+                            />
 
                         <TextView
                             android:id="@+id/durasi_pertemuan"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="5dp"
-                            android:text="" />
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="16sp"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -185,12 +193,12 @@
                             android:layout_marginBottom="10dp"/>
 
                         <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerView"
+                            android:id="@+id/rv_batch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scrollbars="none"
                             android:layout_marginTop="5dp"
-                            android:layout_marginBottom="20dp"/>
+                            android:layout_marginBottom="40dp"/>
 
                     </LinearLayout>
 
