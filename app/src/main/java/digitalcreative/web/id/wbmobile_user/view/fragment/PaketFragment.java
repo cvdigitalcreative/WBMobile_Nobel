@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
@@ -34,8 +35,8 @@ public class PaketFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<String> batch = new ArrayList<>();
     RecyclerView_Adapter adapter;
-    final List<MateriKursus> list = new ArrayList<>();
     List<String> judul = new ArrayList<>();
+    List<List> detail = detail = new ArrayList<>();
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
     String deskripsi, lama_pertemuan, durasi_pertemuan, harga;
@@ -80,9 +81,6 @@ public class PaketFragment extends Fragment {
                     batch.add("Batch "+dataSnapshot1.getKey());
                 }
                 recyclerView.setAdapter(adapter);
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, batch);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                spinner.setAdapter(dataAdapter);
             }
 
             @Override
@@ -97,33 +95,24 @@ public class PaketFragment extends Fragment {
         mDatabaseSpinner.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                MateriKursus model =  new MateriKursus();
                 String paket = "";
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    paket = dataSnapshot1.child("judul").getValue().toString();
-//                    deskripsi = dataSnapshot1.child("deskripsi").getValue().toString();
-//                    lama_pertemuan = dataSnapshot1.child("lama_pertemuan").getValue().toString();
-//                    durasi_pertemuan = dataSnapshot1.child("durasi_pertemuan").getValue().toString();
-//                    harga = dataSnapshot1.child("harga").getValue().toString();
-
-//                    mk.setDeskripsi(deskripsi);
-//                    mk.setDurasi(durasi_pertemuan);
-//                    mk.setHarga(harga);
-//                    mk.setLama_pertemuan(lama_pertemuan);
-
+                    List<String> temp = new ArrayList<>();
+                        paket = dataSnapshot1.child("judul").getValue().toString();
+                        temp.add(dataSnapshot1.child("deskripsi").getValue().toString());
+                        temp.add(dataSnapshot1.child("durasi_pertemuan").getValue().toString());
+                        temp.add(dataSnapshot1.child("harga").getValue().toString());
+                        temp.add(dataSnapshot1.child("lama_pertemuan").getValue().toString());
                     judul.add(paket);
+                    detail.add(temp);
                 }
+
+
+
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, judul);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                 spinner.setAdapter(dataAdapter);
-
-                MateriKursus model =  new MateriKursus();
-
-//                System.out.println("ini adalah = "+list);
-
-//                tvDeskripsi.setText(model.getDeskripsi());
-//                tvDurasi.setText( +" jam");
-//                tvLama.setText(lama + " hari");
-//                tvHarga.setText("Rp "+ harga + ",-");
             }
 
             @Override
@@ -134,41 +123,13 @@ public class PaketFragment extends Fragment {
     }
 
     public void selectedItemSpinner(){
-        //final MateriKursus mkursus = new MateriKursus();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-//                Toast.makeText(parent.getContext(),
-//                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-//                        Toast.LENGTH_SHORT).show();
-//                mkursus.setNamaPaketReal(parent.getItemAtPosition(position).toString());
-
-                String namaPaketReal = parent.getItemAtPosition(position).toString();
-                System.out.println("test = "+namaPaketReal);
-                mDatabasePaket = mDatabaseSpinner.child(namaPaketReal);
-                mDatabasePaket.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                            String deskripsi = dataSnapshot1.child("deskripsi").getValue().toString();
-                            String durasi = dataSnapshot1.child("durasi_pertemuan").getValue().toString();
-                            String harga = dataSnapshot1.child("harga").getValue().toString();
-                            String lama = dataSnapshot1.child("lama_pertemuan").getValue().toString();
-
-                            System.out.println("string = "+deskripsi );
-                            tvDeskripsi.setText(deskripsi);
-                            tvDurasi.setText( durasi +" jam");
-                            tvLama.setText(lama + " hari");
-                            tvHarga.setText("Rp "+ harga + ",-");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                tvDeskripsi.setText(detail.get(position).get(0).toString());
+                tvDurasi.setText(detail.get(position).get(1).toString() +" jam");
+                tvHarga.setText("Rp " +detail.get(position).get(2).toString() +" ,-");
+                tvLama.setText(detail.get(position).get(3).toString() +" pertemuan");
             }
 
             @Override
