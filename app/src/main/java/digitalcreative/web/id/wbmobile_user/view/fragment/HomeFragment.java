@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.synnapps.carouselview.CarouselView;
 
 import digitalcreative.web.id.wbmobile_user.R;
-import digitalcreative.web.id.wbmobile_user.view.kelas.MateriKursus;
+import digitalcreative.web.id.wbmobile_user.view.model.MateriKursus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,11 +70,11 @@ public class HomeFragment extends Fragment {
                 }
 //                batch = dataSnapshot.child(paket).child("informasi_dasar").child("batch").getValue().toString();
 //                tanggal = dataSnapshot.child(paket).child("informasi_dasar").child("tanggal_batch").getValue().toString();
-                MateriKursus mk = new MateriKursus();
-                mk.setNamaPaket(paket);
-                tv_paket.setText(mk.getNamaPaket());
-                tv_batch.setText("Batch "+batch);
-                tv_tanggal.setText(tanggal);
+//                MateriKursus mk = new MateriKursus();
+//                mk.setNamaPaket(paket);
+//                tv_paket.setText(mk.getNamaPaket());
+//                tv_batch.setText("Batch "+batch);
+//                tv_tanggal.setText(tanggal);
             }
 
             @Override
