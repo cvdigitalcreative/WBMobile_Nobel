@@ -7,13 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
-import digitalcreative.web.id.wbmobile_user.view.model.MateriKursus;
-import digitalcreative.web.id.wbmobile_user.view.model.Modul;
+import digitalcreative.web.id.wbmobile_user.model.Modul;
 
 /**
  * Created by User on 07/03/2019.

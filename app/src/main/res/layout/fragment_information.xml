@@ -59,8 +59,99 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#028678"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_launcher_foreground"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:textColor="#fff"
+                android:text="Berdiri sejak tahun 2018 dibawah CV. Digital Creative, Warung Belajar didirikan atas kerjasama serta visi-misi kami untuk memajukan pendidikan yang dapat menunjang kebutuhan industri 4.0 saat ini."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10.00 - 11.00"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/insta_btn"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/ic_home1"/>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="#048779"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fb_btn"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/ic_home1"/>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="#048779"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wa_btn"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/ic_home1"/>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="#048779"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/web_btn"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/ic_home1"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#f3eded">
+
+
+        </LinearLayout>
 
 
 

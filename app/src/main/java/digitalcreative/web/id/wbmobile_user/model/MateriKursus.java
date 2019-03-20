@@ -1,4 +1,4 @@
-package digitalcreative.web.id.wbmobile_user.view.model;
+package digitalcreative.web.id.wbmobile_user.model;
 
 /**
  * Created by User on 05/03/2019.

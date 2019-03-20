@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.synnapps.carouselview.CarouselView;
 
 import digitalcreative.web.id.wbmobile_user.R;
-import digitalcreative.web.id.wbmobile_user.view.model.MateriKursus;
 
 /**
  * A simple {@link Fragment} subclass.

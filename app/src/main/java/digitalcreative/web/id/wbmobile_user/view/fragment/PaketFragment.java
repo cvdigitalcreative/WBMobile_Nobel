@@ -20,12 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.view.adapter.RecyclerView_Adapter;
-import digitalcreative.web.id.wbmobile_user.view.model.MateriKursus;
+import digitalcreative.web.id.wbmobile_user.model.MateriKursus;
 /**
  * A simple {@link Fragment} subclass.
  */
