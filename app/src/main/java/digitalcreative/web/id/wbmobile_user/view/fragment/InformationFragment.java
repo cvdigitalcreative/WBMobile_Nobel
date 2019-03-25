@@ -31,40 +31,57 @@ public class InformationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
+        init(view);
+
+        setInstagramBtn(instagramBtn);
+        setFbBtn(fbBtn);
+        setWaBtn(waBtn);
+        setWebBtn(webBtn);
+
+        return view;
+    }
+
+    private void init (View view) {
         instagramBtn = view.findViewById(R.id.insta_btn);
         fbBtn = view.findViewById(R.id.fb_btn);
         waBtn = view.findViewById(R.id.wa_btn);
         webBtn = view.findViewById(R.id.web_btn);
+    }
 
+    private void setInstagramBtn(ImageButton instagramBtn) {
         instagramBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoInstagram();
             }
         });
+    }
 
+    private void setFbBtn(ImageButton fbBtn) {
         fbBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoFacebook();
             }
         });
+    }
 
+    private void setWaBtn(ImageButton waBtn) {
         waBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoWhatsapp();
             }
         });
+    }
 
+    private void setWebBtn(ImageButton webBtn) {
         webBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoWebpage();
             }
         });
-
-        return view;
     }
 
     private void gotoInstagram() {

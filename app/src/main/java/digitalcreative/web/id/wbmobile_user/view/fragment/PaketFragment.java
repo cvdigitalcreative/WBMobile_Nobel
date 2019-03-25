@@ -72,12 +72,13 @@ public class PaketFragment extends Fragment {
     }
 
     public void initActionBatch(){
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("batch");
+        mDatabase = FirebaseDatabase.getInstance()
+                .getReference().child("batch");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    batch.add("Batch "+dataSnapshot1.getKey());
+                    batch.add(dataSnapshot1.getKey());
                 }
                 recyclerView.setAdapter(adapter);
             }
@@ -106,8 +107,6 @@ public class PaketFragment extends Fragment {
                     judul.add(paket);
                     detail.add(temp);
                 }
-
-
 
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, judul);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
