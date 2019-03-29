@@ -6,9 +6,38 @@ package digitalcreative.web.id.wbmobile_user.model;
 
 public class MateriKursus {
     private String deskripsi;
-    private String durasi;
+    private String durasi_pertemuan;
     private String lama_pertemuan;
     private String harga;
+    private String judul;
+    private Modul modul;
+
+    public MateriKursus(String deskripsi, String durasi_pertemuan, String lama_pertemuan, String harga, String judul, Modul modul) {
+        this.deskripsi = deskripsi;
+        this.durasi_pertemuan = durasi_pertemuan;
+        this.lama_pertemuan = lama_pertemuan;
+        this.harga = harga;
+        this.judul = judul;
+        this.modul = modul;
+    }
+
+    public MateriKursus() {}
+
+    public Modul getModul() {
+        return modul;
+    }
+
+    public void setModul(Modul modul) {
+        this.modul = modul;
+    }
+
+    public String getJudul() {
+        return judul;
+    }
+
+    public void setJudul(String judul) {
+        this.judul = judul;
+    }
 
     public String getDeskripsi() {
         return this.deskripsi;
@@ -18,12 +47,12 @@ public class MateriKursus {
         this.deskripsi = deskripsi;
     }
 
-    public String getDurasi() {
-        return durasi;
+    public String getDurasi_pertemuan() {
+        return durasi_pertemuan;
     }
 
-    public void setDurasi(String durasi) {
-        this.durasi = durasi;
+    public void setDurasi_pertemuan(String durasi_pertemuan) {
+        this.durasi_pertemuan = durasi_pertemuan;
     }
 
     public String getLama_pertemuan() {

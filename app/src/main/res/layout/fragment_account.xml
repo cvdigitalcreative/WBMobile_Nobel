@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.ModulFragment"
+    tools:context=".view.fragment.AccountFragment"
     android:orientation="vertical">
 
     <FrameLayout
@@ -24,13 +24,13 @@
                 android:weightSum="2">
 
                 <ImageView
-                    android:id="@+id/back"
+                    android:clickable="true"
+                    android:id="@+id/iv_back"
                     android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_margin="16dp"
                     android:layout_weight="0.2"
-                    android:src="@drawable/ic_arrow_back"
-                    />
+                    android:src="@drawable/ic_arrow_back" />
 
 
                 <TextView
@@ -148,14 +148,14 @@
                     android:layout_marginTop="10dp"/>
 
                 <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/email"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:textSize="18sp"
+                    android:text=""
                     android:textColor="#000"
-                    android:text=""/>
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"

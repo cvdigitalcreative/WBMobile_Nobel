@@ -7,10 +7,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import digitalcreative.web.id.wbmobile_user.R;
@@ -20,6 +23,7 @@ import digitalcreative.web.id.wbmobile_user.R;
  */
 public class InformationFragment extends Fragment {
     ImageButton instagramBtn, fbBtn, waBtn, webBtn;
+    ImageView iv_back;
 
     public InformationFragment() {
         // Required empty public constructor
@@ -32,16 +36,16 @@ public class InformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
         init(view);
-
         setInstagramBtn(instagramBtn);
         setFbBtn(fbBtn);
         setWaBtn(waBtn);
         setWebBtn(webBtn);
-
+        back();
         return view;
     }
 
     private void init (View view) {
+        iv_back = view.findViewById(R.id.iv_back);
         instagramBtn = view.findViewById(R.id.insta_btn);
         fbBtn = view.findViewById(R.id.fb_btn);
         waBtn = view.findViewById(R.id.wa_btn);
@@ -80,6 +84,20 @@ public class InformationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 gotoWebpage();
+            }
+        });
+    }
+
+    private void back(){
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                BantuanFragment bantuanFragment = new BantuanFragment();
+                fragmentTransaction.replace(R.id.container_fragment, bantuanFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }

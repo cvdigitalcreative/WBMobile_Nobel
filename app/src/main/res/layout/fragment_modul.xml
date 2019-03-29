@@ -86,11 +86,11 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list_modul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_modul"
-            android:scrollbars="none"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:scrollbars="none">
 
         </android.support.v7.widget.RecyclerView>
 

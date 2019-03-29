@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragment.ModulFragment"
+    tools:context=".view.fragment.ReportingFragment"
     android:orientation="vertical">
 
     <FrameLayout
@@ -24,13 +24,13 @@
                 android:weightSum="2">
 
                 <ImageView
-                    android:id="@+id/back"
+                    android:clickable="true"
+                    android:id="@+id/iv_back"
                     android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:layout_margin="16dp"
                     android:layout_weight="0.2"
-                    android:src="@drawable/ic_arrow_back"
-                    />
+                    android:src="@drawable/ic_arrow_back" />
 
 
                 <TextView
@@ -69,11 +69,12 @@
             android:text="Problem"/>
 
         <EditText
+            android:id="@+id/et_problem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rect3"
             android:layout_marginBottom="20dp"
-            android:padding="10dp"/>
+            android:background="@drawable/rect3"
+            android:padding="10dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -82,22 +83,24 @@
             android:text="Description" />
 
         <EditText
+            android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@drawable/rect3"
-            android:inputType="textMultiLine"
-            android:gravity="top"
             android:layout_marginBottom="20dp"
-            android:padding="10dp"/>
+            android:background="@drawable/rect3"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:padding="10dp" />
 
         <Button
+            android:id="@+id/btn_lapor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rect2"
             android:text="Report"
             android:textAlignment="center"
-            android:textSize="15sp"
             android:textColor="#ffff"
-            android:background="@drawable/rect2"/>
+            android:textSize="15sp" />
 
     </LinearLayout>
 

@@ -17,18 +17,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.synnapps.carouselview.CarouselView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import digitalcreative.web.id.wbmobile_user.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
-    CarouselView carouselView;
     TextView tv_paket, tv_batch, tv_tanggal;
-    DatabaseReference mDatabase;
-
-
-
+    DatabaseReference mDatabase, mDatabaseKursus;
+    ArrayList<List> list = new ArrayList<>();
+    String user;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,8 +42,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
         receiveID();
+        connectToFirebase();
         initAction();
-
         return view;
     }
 
@@ -53,27 +54,49 @@ public class HomeFragment extends Fragment {
     }
 
     private void receiveID(){
-        String user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+        user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+    }
+
+    private void connectToFirebase(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("nobel").child(user).child("kursus");
+        mDatabaseKursus = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
     }
 
     private void initAction(){
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String paket = null, batch = null, tanggal = null;
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                String paket = "", batch = "", tanggal = "";
+                List<String> temp = new ArrayList<>();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     paket = dataSnapshot1.getKey();
                     batch = dataSnapshot1.child("informasi_dasar").child("batch").getValue().toString();
                     tanggal = dataSnapshot1.child("informasi_dasar").child("tanggal_batch").getValue().toString();
+                    temp.add(paket);
+                    temp.add(batch);
+                    temp.add(tanggal);
+                    list.add(temp);
                 }
-//                batch = dataSnapshot.child(paket).child("informasi_dasar").child("batch").getValue().toString();
-//                tanggal = dataSnapshot.child(paket).child("informasi_dasar").child("tanggal_batch").getValue().toString();
-//                MateriKursus mk = new MateriKursus();
-//                mk.setNamaPaket(paket);
-//                tv_paket.setText(mk.getNamaPaket());
-//                tv_batch.setText("Batch "+batch);
-//                tv_tanggal.setText(tanggal);
+
+                initActionReal(list.get(0).get(0).toString());
+                tv_batch.setText("Batch "+list.get(0).get(1).toString());
+                tv_tanggal.setText(list.get(0).get(2).toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void initActionReal(final String judul){
+        mDatabaseKursus.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String judulReal = dataSnapshot.child(judul).child("judul").getValue().toString();
+                tv_paket.setText(judulReal);
             }
 
             @Override
@@ -82,6 +105,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
 }

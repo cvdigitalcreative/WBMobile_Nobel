@@ -35,7 +35,7 @@ public class PaketFragment extends Fragment {
     ArrayList<String> batch = new ArrayList<>();
     RecyclerView_Adapter adapter;
     List<String> judul = new ArrayList<>();
-    List<List> detail = detail = new ArrayList<>();
+    List<List> detail  = new ArrayList<>();
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
     String deskripsi, lama_pertemuan, durasi_pertemuan, harga;
@@ -95,7 +95,6 @@ public class PaketFragment extends Fragment {
         mDatabaseSpinner.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                MateriKursus model =  new MateriKursus();
                 String paket = "";
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     List<String> temp = new ArrayList<>();
@@ -121,6 +120,7 @@ public class PaketFragment extends Fragment {
     }
 
     public void selectedItemSpinner(){
+        System.out.println(detail);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
