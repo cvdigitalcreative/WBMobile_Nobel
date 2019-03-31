@@ -85,17 +85,14 @@ public class ModulFragment extends Fragment {
                     list.add(paket);
                     listJudul = new ArrayList<>();
                     for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
-
                         String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
                         String status = dataSnapshot2.child("status").getValue().toString();
                         String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
                         String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
-
                         listDetailPaket.add(new Modul(nama_modul, status, tema_materi, url_modul));
                     }
                     listJudul.add(listDetailPaket);
                     multiList.add(listJudul);
-
                 }
 
                 System.out.println(multiList);
@@ -119,7 +116,6 @@ public class ModulFragment extends Fragment {
                          "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
                         Toast.LENGTH_SHORT).show();
                 setRecycleView(multiList.get(position));
-
             }
 
             @Override
@@ -129,13 +125,8 @@ public class ModulFragment extends Fragment {
         });
     }
     private void setRecycleView(List listmodul){
-//        listDetailPaket = new ArrayList<>();
-//        listDetailPaket.add(new Modul("Pertemuan1.pdf", "Aktif", "Dasar", "https:\\"));
-//        listDetailPaket.add(new Modul("Pertemuan2.pdf", "Aktif", "Dasar", "https:\\"));
-//        listDetailPaket.add(new Modul("Pertemuan3.pdf", "Aktif", "Dasar", "https:\\"));
-//        System.out.println(listDetailPaket);
         for(int i=0; i<listmodul.size(); i++){
-            RecyclerViewAdapter_Modul recycler = new RecyclerViewAdapter_Modul((List<Modul>) listmodul.get(i));
+            RecyclerViewAdapter_Modul recycler = new RecyclerViewAdapter_Modul((List<Modul>) listmodul.get(i), getActivity());
             rv_list_modul.setLayoutManager(new LinearLayoutManager(getActivity()));
             rv_list_modul.setItemAnimator( new DefaultItemAnimator());
             rv_list_modul.setAdapter(recycler);

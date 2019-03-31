@@ -27,7 +27,6 @@ public class BaseActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         setBottomNavigationView(bottomNavigationView);
-
     }
 
     private void setBottomNavigationView(BottomNavigationView bottomNavigationView){
