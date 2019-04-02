@@ -51,12 +51,12 @@ public class PaketFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paket, container, false);
 
         init(view);
-        initActionBatch();
+//        initActionBatch();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new RecyclerView_Adapter(batch);
 
-        initActionSpinner();
+//        initActionSpinner();
         selectedItemSpinner();
 
         return view;
@@ -71,53 +71,53 @@ public class PaketFragment extends Fragment {
         tvHarga = view.findViewById(R.id.harga_paket);
     }
 
-    public void initActionBatch(){
-        mDatabase = FirebaseDatabase.getInstance()
-                .getReference().child("batch");
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    batch.add(dataSnapshot1.getKey());
-                }
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void initActionSpinner(){
-        mDatabaseSpinner = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
-        mDatabaseSpinner.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String paket = "";
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    List<String> temp = new ArrayList<>();
-                        paket = dataSnapshot1.child("judul").getValue().toString();
-                        temp.add(dataSnapshot1.child("deskripsi").getValue().toString());
-                        temp.add(dataSnapshot1.child("durasi_pertemuan").getValue().toString());
-                        temp.add(dataSnapshot1.child("harga").getValue().toString());
-                        temp.add(dataSnapshot1.child("lama_pertemuan").getValue().toString());
-                    judul.add(paket);
-                    detail.add(temp);
-                }
-
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, judul);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                spinner.setAdapter(dataAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    public void initActionBatch(){
+//        mDatabase = FirebaseDatabase.getInstance()
+//                .getReference().child("batch");
+//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    batch.add(dataSnapshot1.getKey());
+//                }
+//                recyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+//
+//    public void initActionSpinner(){
+//        mDatabaseSpinner = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
+//        mDatabaseSpinner.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String paket = "";
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    List<String> temp = new ArrayList<>();
+//                        paket = dataSnapshot1.child("judul").getValue().toString();
+//                        temp.add(dataSnapshot1.child("deskripsi").getValue().toString());
+//                        temp.add(dataSnapshot1.child("durasi_pertemuan").getValue().toString());
+//                        temp.add(dataSnapshot1.child("harga").getValue().toString());
+//                        temp.add(dataSnapshot1.child("lama_pertemuan").getValue().toString());
+//                    judul.add(paket);
+//                    detail.add(temp);
+//                }
+//
+//                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, judul);
+//                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+//                spinner.setAdapter(dataAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     public void selectedItemSpinner(){
         System.out.println(detail);

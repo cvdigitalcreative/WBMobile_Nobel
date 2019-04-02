@@ -31,7 +31,7 @@ public class AccountFragment extends Fragment {
     ImageView iv_back;
     DatabaseReference mUserProfile;
     String id_user;
-    ArrayList<String> list = new ArrayList<>();
+    ArrayList<String> listProfile = new ArrayList<>();
 
     public AccountFragment() {
         // Required empty public constructor
@@ -88,12 +88,12 @@ public class AccountFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     String key = dataSnapshot1.getKey().toString();
                     String value = dataSnapshot.child(key).getValue().toString();
-                    list.add(value);
+                    listProfile.add(value);
                 }
-                tv_alamat.setText(list.get(0).toString());
-                tv_email.setText(list.get(1).toString());
-                tv_nama.setText(list.get(2).toString());
-                tv_nomor.setText(list.get(3).toString());
+                tv_alamat.setText(listProfile.get(0).toString());
+                tv_email.setText(listProfile.get(1).toString());
+                tv_nama.setText(listProfile.get(2).toString());
+                tv_nomor.setText(listProfile.get(3).toString());
             }
 
             @Override

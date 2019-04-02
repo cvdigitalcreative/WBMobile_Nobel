@@ -56,7 +56,7 @@ public class ModulFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_modul, container, false);
         init(view);
         connectToFirebase();
-        initActionSpinner();
+//        initActionSpinner();
         selectedItemSpinner();
         return view;
     }
@@ -72,41 +72,41 @@ public class ModulFragment extends Fragment {
         dbModul = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
     }
 
-    public void initActionSpinner(){
-
-        dbModul.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String paket = "";
-                multiList = new ArrayList<>();
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    listDetailPaket = new ArrayList<>();
-                    paket = dataSnapshot1.child("judul").getValue().toString();
-                    list.add(paket);
-                    listJudul = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
-                        String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
-                        String status = dataSnapshot2.child("status").getValue().toString();
-                        String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
-                        String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
-                        listDetailPaket.add(new Modul(nama_modul, status, tema_materi, url_modul));
-                    }
-                    listJudul.add(listDetailPaket);
-                    multiList.add(listJudul);
-                }
-
-                System.out.println(multiList);
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                spinnerModul.setAdapter(dataAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    public void initActionSpinner(){
+//
+//        dbModul.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String paket = "";
+//                multiList = new ArrayList<>();
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    listDetailPaket = new ArrayList<>();
+//                    paket = dataSnapshot1.child("judul").getValue().toString();
+//                    list.add(paket);
+//                    listJudul = new ArrayList<>();
+//                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
+//                        String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
+//                        String status = dataSnapshot2.child("status").getValue().toString();
+//                        String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
+//                        String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
+//                        listDetailPaket.add(new Modul(nama_modul, status, tema_materi, url_modul));
+//                    }
+//                    listJudul.add(listDetailPaket);
+//                    multiList.add(listJudul);
+//                }
+//
+//                System.out.println(multiList);
+//                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
+//                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+//                spinnerModul.setAdapter(dataAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     public void selectedItemSpinner(){
         spinnerModul.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
