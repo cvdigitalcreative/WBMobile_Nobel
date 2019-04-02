@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.support.v4.app.FragmentManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ public class PaketFragment extends Fragment {
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
     String deskripsi, lama_pertemuan, durasi_pertemuan, harga;
+    Button btnPesan;
 
     public PaketFragment() {
         // Required empty public constructor
@@ -59,6 +62,14 @@ public class PaketFragment extends Fragment {
         initActionSpinner();
         selectedItemSpinner();
 
+        btnPesan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoOrderDialog();
+
+            }
+        });
+
         return view;
     }
 
@@ -69,6 +80,7 @@ public class PaketFragment extends Fragment {
         tvDurasi = view.findViewById(R.id.durasi_pertemuan);
         tvLama = view.findViewById(R.id.lama_pertemuan);
         tvHarga = view.findViewById(R.id.harga_paket);
+        btnPesan = view.findViewById(R.id.btn_pesan);
     }
 
     public void initActionBatch(){
@@ -137,7 +149,13 @@ public class PaketFragment extends Fragment {
         });
     }
 
-
+    private void gotoOrderDialog() {
+        FragmentManager manager = getFragmentManager();
+        FormOrderDialog dialogOrder = new FormOrderDialog();
+//        Bundle bundle = new Bundle();
+//        dialogAdd.setArguments(bundle);
+        dialogOrder.show(manager, dialogOrder.getTag());
+    }
 
 
 }
