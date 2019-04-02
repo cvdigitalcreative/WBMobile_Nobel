@@ -1,5 +1,6 @@
 package digitalcreative.web.id.wbmobile_user.view.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -61,11 +62,13 @@ public class SplashScreen extends AppCompatActivity {
         receiveID();
         connectToFirebase();
         initListJudul();
-        initAction();
+        initActionHome();
         initActionBatch();
         initActionSpinner();
         initActionSpinnerModul();
-
+        initShowProfile();
+        saveArrayList();
+        goToBaseActivity();
     }
 
     private void receiveID(){
@@ -79,7 +82,7 @@ public class SplashScreen extends AppCompatActivity {
         mDatabaseProfile = FirebaseDatabase.getInstance().getReference().child("nobel").child(user).child("profile_nobel");
     }
 
-    private void initAction(){
+    private void initActionHome(){
         mDatabaseKursusNobel.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -99,7 +102,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(tanggal);
                     homeList.add(temp);
                 }
-                System.out.println(homeList);
+//                System.out.println(homeList);
             }
 
             @Override
@@ -122,7 +125,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(judul);
                     listJudul.add(temp);
                 }
-                System.out.println(listJudul);
+//                System.out.println(listJudul);
             }
 
             @Override
@@ -139,7 +142,7 @@ public class SplashScreen extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     batch.add(dataSnapshot1.getKey());
                 }
-                System.out.println(batch);
+//                System.out.println(batch);
             }
 
             @Override
@@ -164,8 +167,8 @@ public class SplashScreen extends AppCompatActivity {
                     judul.add(paket);
                     detail.add(temp);
                 }
-                System.out.println(judul);
-                System.out.println(detail);
+//                System.out.println(judul);
+//                System.out.println(detail);
             }
 
             @Override
@@ -191,12 +194,12 @@ public class SplashScreen extends AppCompatActivity {
                         String status = dataSnapshot2.child("status").getValue().toString();
                         String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
                         String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
-                        listDetailPaket.add(new Modul(nama_modul, status, tema_materi, url_modul));
+                        listDetailPaket.add(new Modul( nama_modul, status, tema_materi, url_modul));
                     }
                     listJudulModul.add(listDetailPaket);
-                    multiList.add(listJudul);
+                    multiList.add(listJudulModul);
                 }
-                System.out.println(multiList);
+//                System.out.println(multiList);
             }
 
             @Override
@@ -206,7 +209,7 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
-    private void showProfile(){
+    private void initShowProfile(){
         mDatabaseProfile.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -215,6 +218,7 @@ public class SplashScreen extends AppCompatActivity {
                     String value = dataSnapshot.child(key).getValue().toString();
                     listProfile.add(value);
                 }
+//                System.out.println(listProfile);
             }
 
             @Override
@@ -224,12 +228,28 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
-    public void saveArrayList(ArrayList<String> list, String key){
+    public void saveArrayList(){
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
+        String jsonHomeList = gson.toJson(homeList);
+        String jsonJudulPaket = gson.toJson(judul);
+        String jsonDetailPaket = gson.toJson(detail);
+        String jsonbatchPaket = gson.toJson(batch);
+        String jsonMultiListModul = gson.toJson(multiList);
+        String jsonListProfile = gson.toJson(listProfile);
+        editor.putString("List_Home", jsonHomeList);
+        editor.putString("Judul_Paket", jsonJudulPaket);
+        editor.putString("Detail_Paket", jsonDetailPaket);
+        editor.putString("Batch_Paket", jsonbatchPaket);
+        editor.putString("List_Modul", jsonMultiListModul);
+        editor.putString("List_Profile", jsonListProfile);
         editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void goToBaseActivity(){
+        Intent intent = new Intent(SplashScreen.this, BaseActivity.class);
+        startActivity(intent);
+        SplashScreen.this.finish();
     }
 
 }
