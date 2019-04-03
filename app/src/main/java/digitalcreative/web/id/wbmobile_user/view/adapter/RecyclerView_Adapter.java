@@ -41,7 +41,6 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView_Adap
         TextView tv_batch;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tv_batch = itemView.findViewById(R.id.batch2);
         }
     }

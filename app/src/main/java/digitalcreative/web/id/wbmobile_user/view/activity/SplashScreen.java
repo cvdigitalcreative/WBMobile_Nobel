@@ -33,14 +33,15 @@ public class SplashScreen extends AppCompatActivity {
     ArrayList<List> homeList = new ArrayList<>();
     ArrayList<List> listJudul, listJudulModul;
     ArrayList<String> batch = new ArrayList<>();
-    List<String> judul = new ArrayList<>();
-    List<List> detail  = new ArrayList<>();
+    ArrayList<String> judul = new ArrayList<>();
+    ArrayList<List> detail  = new ArrayList<>();
     ArrayList<String> list = new ArrayList<>();
-    List<Modul> listDetailPaket;
-    ArrayList<List> multiList;
+    ArrayList<List> listDetailPaket;
+    List<List> multiList;
     ArrayList<String> listProfile = new ArrayList<>();
     String user;
     SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,6 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         receiveID();
         connectToFirebase();
         initListJudul();
@@ -67,12 +67,12 @@ public class SplashScreen extends AppCompatActivity {
         initActionSpinner();
         initActionSpinnerModul();
         initShowProfile();
-        saveArrayList();
         goToBaseActivity();
     }
 
     private void receiveID(){
         user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+        saveString(user, "ID_User");
     }
 
     private void connectToFirebase(){
@@ -102,7 +102,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(tanggal);
                     homeList.add(temp);
                 }
-//                System.out.println(homeList);
+                saveArrayList(homeList, "List_Home");
             }
 
             @Override
@@ -124,8 +124,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(key);
                     temp.add(judul);
                     listJudul.add(temp);
-                }
-//                System.out.println(listJudul);
+                };
             }
 
             @Override
@@ -142,7 +141,7 @@ public class SplashScreen extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     batch.add(dataSnapshot1.getKey());
                 }
-//                System.out.println(batch);
+                saveArrayListString(batch, "List_Batch");
             }
 
             @Override
@@ -167,8 +166,8 @@ public class SplashScreen extends AppCompatActivity {
                     judul.add(paket);
                     detail.add(temp);
                 }
-//                System.out.println(judul);
-//                System.out.println(detail);
+                saveArrayListString(judul, "List_Judul");
+                saveArrayList(detail, "List_Detail");
             }
 
             @Override
@@ -178,28 +177,65 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
+//    public void initActionSpinnerModul(){
+//        mDatabaseKursus.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String paket = "";
+//                multiList = new ArrayList<>();
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    listDetailPaket = new ArrayList<>();
+//                    paket = dataSnapshot1.child("judul").getValue().toString();
+//                    list.add(paket);
+//                    listJudulModul = new ArrayList<>();
+//                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
+//                        String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
+//                        String status = dataSnapshot2.child("status").getValue().toString();
+//                        String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
+//                        String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
+//                        listDetailPaket.add(new Modul( nama_modul, status, tema_materi, url_modul));
+//                    }
+//                    listJudulModul.add(listDetailPaket);
+//                    multiList.add(listJudulModul);
+//                }
+//                saveList(multiList, "List_Multi_Modul");
+//                saveList(listJudulModul, "List_Judul_Modul");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+
     public void initActionSpinnerModul(){
         mDatabaseKursus.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String paket = "";
-                multiList = new ArrayList<>();
+
+                listJudulModul = new ArrayList<>();
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     listDetailPaket = new ArrayList<>();
                     paket = dataSnapshot1.child("judul").getValue().toString();
                     list.add(paket);
-                    listJudulModul = new ArrayList<>();
                     for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
+                        ArrayList<String> temp = new ArrayList<>();
                         String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
                         String status = dataSnapshot2.child("status").getValue().toString();
                         String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
                         String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
-                        listDetailPaket.add(new Modul( nama_modul, status, tema_materi, url_modul));
+                        temp.add(nama_modul);
+                        temp.add(status);
+                        temp.add(tema_materi);
+                        temp.add(url_modul);
+                        listDetailPaket.add(temp);
                     }
                     listJudulModul.add(listDetailPaket);
-                    multiList.add(listJudulModul);
+
                 }
-//                System.out.println(multiList);
+                saveList(listJudulModul, "List_Judul_Modul");
             }
 
             @Override
@@ -218,7 +254,7 @@ public class SplashScreen extends AppCompatActivity {
                     String value = dataSnapshot.child(key).getValue().toString();
                     listProfile.add(value);
                 }
-//                System.out.println(listProfile);
+                saveArrayListString(listProfile, "List_Profile");
             }
 
             @Override
@@ -228,28 +264,44 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
-    public void saveArrayList(){
-        SharedPreferences.Editor editor = prefs.edit();
+    public void saveArrayListString(ArrayList<String> list, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = prefs.edit();
         Gson gson = new Gson();
-        String jsonHomeList = gson.toJson(homeList);
-        String jsonJudulPaket = gson.toJson(judul);
-        String jsonDetailPaket = gson.toJson(detail);
-        String jsonbatchPaket = gson.toJson(batch);
-        String jsonMultiListModul = gson.toJson(multiList);
-        String jsonListProfile = gson.toJson(listProfile);
-        editor.putString("List_Home", jsonHomeList);
-        editor.putString("Judul_Paket", jsonJudulPaket);
-        editor.putString("Detail_Paket", jsonDetailPaket);
-        editor.putString("Batch_Paket", jsonbatchPaket);
-        editor.putString("List_Modul", jsonMultiListModul);
-        editor.putString("List_Profile", jsonListProfile);
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void saveArrayList(ArrayList<List> list, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void saveList(List<List> list, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void saveString(String str, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = prefs.edit();
+        editor.putString(key, str);
         editor.apply();     // This line is IMPORTANT !!!
     }
 
     public void goToBaseActivity(){
         Intent intent = new Intent(SplashScreen.this, BaseActivity.class);
         startActivity(intent);
-        SplashScreen.this.finish();
+        this.finish();
     }
 
 }

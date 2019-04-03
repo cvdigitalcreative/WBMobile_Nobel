@@ -38,15 +38,12 @@ import digitalcreative.web.id.wbmobile_user.view.fragment.ModulFragment;
  */
 
 public class RecyclerViewAdapter_Modul extends RecyclerView.Adapter<RecyclerViewAdapter_Modul.MyHolder>{
-    List<Modul> mData;
+    List<List> mData;
     Context context;
-    private static final int PERMISSION_STORAGE_CODE = 1000;
-    String url;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
-    StorageReference ref;
 
-    public RecyclerViewAdapter_Modul(List<Modul> mData, Context context) {
+    public RecyclerViewAdapter_Modul(List<List> mData, Context context) {
         this.mData = mData;
         this.context = context;
     }
@@ -61,14 +58,15 @@ public class RecyclerViewAdapter_Modul extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(MyHolder holder,int position) {
-        final Modul mdl = mData.get(position);
-        holder.tv_namaModul.setText(mdl.getNama_modul());
-        holder.tv_temaMateri.setText(mdl.getTema_materi());
+        final String nama_modul = mData.get(position).get(0).toString();
+        String tema_materi = mData.get(position).get(2).toString();
+        final String url = mData.get(position).get(3).toString();
+        holder.tv_namaModul.setText(nama_modul);
+        holder.tv_temaMateri.setText(tema_materi);
         holder.iv_download_modul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                url = mdl.getUrl_modul();
-                tryDownloading(url, mdl.getNama_modul());
+                tryDownloading(url, nama_modul);
             }
         });
     }

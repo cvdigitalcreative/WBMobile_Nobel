@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
+import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.model.MateriKursus;
 import digitalcreative.web.id.wbmobile_user.model.Modul;
 import digitalcreative.web.id.wbmobile_user.view.adapter.RecyclerViewAdapter_Modul;
@@ -37,11 +38,8 @@ import digitalcreative.web.id.wbmobile_user.view.adapter.RecyclerViewAdapter_Mod
  */
 public class ModulFragment extends Fragment {
     Spinner spinnerModul;
-    DatabaseReference dbModul;
     ArrayList<String> list = new ArrayList<>();
-    List<Modul> listDetailPaket;
-    ArrayList<List> listJudul;
-    ArrayList<List> multiList;
+    ArrayList<List> listJudulModul;
     RecyclerView rv_list_modul;
 
     public ModulFragment() {
@@ -55,8 +53,8 @@ public class ModulFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_modul, container, false);
         init(view);
-        connectToFirebase();
-//        initActionSpinner();
+        initData();
+        initActionSpinner();
         selectedItemSpinner();
         return view;
     }
@@ -68,54 +66,24 @@ public class ModulFragment extends Fragment {
         rv_list_modul.setLayoutManager(MyLinearLayoutManager);
     }
 
-    private void connectToFirebase(){
-        dbModul = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
+    private void initData(){
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        list = data.getArrayListString("List_Judul");
+        listJudulModul = data.getArrayList("List_Judul_Modul");
+        System.out.println(listJudulModul);
     }
 
-//    public void initActionSpinner(){
-//
-//        dbModul.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String paket = "";
-//                multiList = new ArrayList<>();
-//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-//                    listDetailPaket = new ArrayList<>();
-//                    paket = dataSnapshot1.child("judul").getValue().toString();
-//                    list.add(paket);
-//                    listJudul = new ArrayList<>();
-//                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
-//                        String nama_modul = dataSnapshot2.child("nama_modul").getValue().toString();
-//                        String status = dataSnapshot2.child("status").getValue().toString();
-//                        String tema_materi = dataSnapshot2.child("tema_materi").getValue().toString();
-//                        String url_modul = dataSnapshot2.child("url_modul").getValue().toString();
-//                        listDetailPaket.add(new Modul(nama_modul, status, tema_materi, url_modul));
-//                    }
-//                    listJudul.add(listDetailPaket);
-//                    multiList.add(listJudul);
-//                }
-//
-//                System.out.println(multiList);
-//                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
-//                dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-//                spinnerModul.setAdapter(dataAdapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    private void initActionSpinner(){
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinnerModul.setAdapter(dataAdapter);
+    }
 
     public void selectedItemSpinner(){
         spinnerModul.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                         "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
-                setRecycleView(multiList.get(position));
+                setRecycleView(listJudulModul.get(position));
             }
 
             @Override
@@ -124,13 +92,11 @@ public class ModulFragment extends Fragment {
             }
         });
     }
-    private void setRecycleView(List listmodul){
-        for(int i=0; i<listmodul.size(); i++){
-            RecyclerViewAdapter_Modul recycler = new RecyclerViewAdapter_Modul((List<Modul>) listmodul.get(i), getActivity());
-            rv_list_modul.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rv_list_modul.setItemAnimator( new DefaultItemAnimator());
-            rv_list_modul.setAdapter(recycler);
-        }
+    private void setRecycleView(List<List> listmodul){
+        RecyclerViewAdapter_Modul recycler = new RecyclerViewAdapter_Modul(listmodul, getActivity());
+        rv_list_modul.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_list_modul.setItemAnimator( new DefaultItemAnimator());
+        rv_list_modul.setAdapter(recycler);
 
     }
 

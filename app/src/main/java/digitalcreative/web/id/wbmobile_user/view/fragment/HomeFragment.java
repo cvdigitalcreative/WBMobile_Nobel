@@ -1,7 +1,9 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,21 +17,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.synnapps.carouselview.CarouselView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
+import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
     TextView tv_paket, tv_batch, tv_tanggal;
-    DatabaseReference mDatabase, mDatabaseKursus;
-    ArrayList<List> list = new ArrayList<>();
-    String user;
+    ArrayList<List> homelist = new ArrayList<>();
+    SharedPreferences prefs;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,6 +46,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         init(view);
+        initData();
+        initAction();
         return view;
     }
 
@@ -50,56 +57,15 @@ public class HomeFragment extends Fragment {
         tv_tanggal = view.findViewById(R.id.tv_tanggal);
     }
 
-//    private void receiveID(){
-//        user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
-//    }
+    private void initData(){
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        homelist = data.getArrayList("List_Home");
+        System.out.println(homelist);
+    }
 
-//    private void connectToFirebase(){
-//        mDatabase = FirebaseDatabase.getInstance().getReference().child("nobel").child(user).child("kursus");
-//        mDatabaseKursus = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
-//    }
-//
-//    private void initAction(){
-//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String paket = "", batch = "", tanggal = "";
-//                List<String> temp = new ArrayList<>();
-//                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-//                    paket = dataSnapshot1.getKey();
-//                    batch = dataSnapshot1.child("informasi_dasar").child("batch").getValue().toString();
-//                    tanggal = dataSnapshot1.child("informasi_dasar").child("tanggal_batch").getValue().toString();
-//                    temp.add(paket);
-//                    temp.add(batch);
-//                    temp.add(tanggal);
-//                    list.add(temp);
-//                }
-//
-//                initActionReal(list.get(0).get(0).toString());
-//                tv_batch.setText("Batch "+list.get(0).get(1).toString());
-//                tv_tanggal.setText(list.get(0).get(2).toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }
-//
-//    private void initActionReal(final String judul){
-//        mDatabaseKursus.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String judulReal = dataSnapshot.child(judul).child("judul").getValue().toString();
-//                tv_paket.setText(judulReal);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
+    private void initAction(){
+        tv_paket.setText(homelist.get(0).get(0).toString());
+        tv_batch.setText("Batch "+homelist.get(0).get(1).toString());
+        tv_tanggal.setText(homelist.get(0).get(2).toString());
+    }
 }

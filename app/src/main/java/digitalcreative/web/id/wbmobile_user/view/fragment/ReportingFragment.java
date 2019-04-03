@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import digitalcreative.web.id.wbmobile_user.R;
+import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.model.Laporan;
 
 /**
@@ -71,7 +72,8 @@ public class ReportingFragment extends Fragment {
     }
 
     private void init_data(){
-        uid = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        uid = data.getString("ID_User");
         mDatabase = FirebaseDatabase.getInstance().getReference().child("pengaduan");
     }
 

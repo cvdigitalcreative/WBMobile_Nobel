@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import digitalcreative.web.id.wbmobile_user.R;
+import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +30,6 @@ import digitalcreative.web.id.wbmobile_user.R;
 public class AccountFragment extends Fragment {
     TextView tv_nama, tv_alamat, tv_nomor, tv_email;
     ImageView iv_back;
-    DatabaseReference mUserProfile;
     String id_user;
     ArrayList<String> listProfile = new ArrayList<>();
 
@@ -45,8 +45,7 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         init(view);
         init_data();
-        connectToFirebase();
-        showProfile();
+        initShowProfile();
         back();
         return view;
     }
@@ -60,7 +59,9 @@ public class AccountFragment extends Fragment {
     }
 
     private void init_data(){
-        id_user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        id_user = data.getString("ID_User");
+        listProfile = data.getArrayListString("List_Profile");
     }
 
     private void back(){
@@ -77,30 +78,11 @@ public class AccountFragment extends Fragment {
         });
     }
 
-    private void connectToFirebase(){
-        mUserProfile = FirebaseDatabase.getInstance().getReference().child("nobel").child(id_user).child("profile_nobel");
-    }
-
-    private void showProfile(){
-        mUserProfile.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    String key = dataSnapshot1.getKey().toString();
-                    String value = dataSnapshot.child(key).getValue().toString();
-                    listProfile.add(value);
-                }
-                tv_alamat.setText(listProfile.get(0).toString());
-                tv_email.setText(listProfile.get(1).toString());
-                tv_nama.setText(listProfile.get(2).toString());
-                tv_nomor.setText(listProfile.get(3).toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    private void initShowProfile(){
+        tv_alamat.setText(listProfile.get(0).toString());
+        tv_email.setText(listProfile.get(1).toString());
+        tv_nama.setText(listProfile.get(2).toString());
+        tv_nomor.setText(listProfile.get(3).toString());
     }
 
 }
