@@ -1,5 +1,6 @@
 package digitalcreative.web.id.wbmobile_user.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,13 +43,15 @@ public class SplashScreen extends AppCompatActivity {
     String user;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+    long start, end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-
+        ProgressDialog progress = ProgressDialog.show(this, "", "Please Wait ..", true, false);
+        start = System.currentTimeMillis();
         receiveID();
         connectToFirebase();
         initListJudul();
@@ -57,7 +60,24 @@ public class SplashScreen extends AppCompatActivity {
         initActionSpinner();
         initActionSpinnerModul();
         initShowProfile();
-        goToBaseActivity();
+        end = System.currentTimeMillis();
+        System.out.println(end-start);
+        progress.dismiss();
+        LogoLauncher logoLauncher = new LogoLauncher();
+        logoLauncher.start();
+    }
+
+    private class LogoLauncher extends Thread{
+        public void run(){
+            try{
+                sleep((end - start) + 5000);
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            goToBaseActivity();
+        }
+
     }
 
     private void receiveID(){
@@ -255,6 +275,12 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
+    public void goToBaseActivity(){
+        Intent intent = new Intent(SplashScreen.this, BaseActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
     public void saveArrayListString(ArrayList<String> list, String key){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit();
@@ -287,12 +313,6 @@ public class SplashScreen extends AppCompatActivity {
         editor = prefs.edit();
         editor.putString(key, str);
         editor.apply();     // This line is IMPORTANT !!!
-    }
-
-    public void goToBaseActivity(){
-        Intent intent = new Intent(SplashScreen.this, BaseActivity.class);
-        startActivity(intent);
-        this.finish();
     }
 
 }
