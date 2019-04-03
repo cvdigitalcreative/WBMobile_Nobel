@@ -46,7 +46,7 @@ public class PaketFragment extends Fragment {
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
     Button btnPesan;
-    SharedPreferences prefs;
+    ArrayList<String> listProfile = new ArrayList<>();
 
     public PaketFragment() {
         // Required empty public constructor
@@ -81,6 +81,7 @@ public class PaketFragment extends Fragment {
         judul = data.getArrayListString("List_Judul");
         detail = data.getArrayList("List_Detail");
         batch = data.getArrayListString("List_Batch");
+        listProfile = data.getArrayListString("List_Profile");
     }
 
     private void initActionBatch(){
@@ -101,7 +102,7 @@ public class PaketFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tvDeskripsi.setText(detail.get(position).get(0).toString());
                 tvDurasi.setText(detail.get(position).get(1).toString() +" jam");
-                tvHarga.setText("Rp " +detail.get(position).get(2).toString() +" ,-");
+                tvHarga.setText("Rp " +detail.get(position).get(2).toString());
                 tvLama.setText(detail.get(position).get(3).toString() +" pertemuan");
             }
 
@@ -116,12 +117,18 @@ public class PaketFragment extends Fragment {
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoOrderDialog();
+                goToOrderDialog();
             }
         });
     }
 
-    private void gotoOrderDialog() {
+    private void goToOrderDialog() {
+        String nama = listProfile.get(2);
+        String harga = tvHarga.getText().toString();
+        String deskripsi = tvDeskripsi.getText().toString();
+        String nama_paket = spinner.getSelectedItem().toString();
+        System.out.println(nama + " " + harga + " " + deskripsi + " " + nama_paket);
+
         FragmentManager manager = getFragmentManager();
         FormOrderDialog dialogOrder = new FormOrderDialog();
 //        Bundle bundle = new Bundle();

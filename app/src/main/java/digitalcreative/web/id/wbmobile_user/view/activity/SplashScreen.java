@@ -125,6 +125,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(judul);
                     listJudul.add(temp);
                 };
+                saveList(listJudul, "List_Judul_Real");
             }
 
             @Override

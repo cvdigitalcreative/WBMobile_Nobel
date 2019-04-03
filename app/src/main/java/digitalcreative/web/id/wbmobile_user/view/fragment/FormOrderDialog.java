@@ -28,6 +28,7 @@ public class FormOrderDialog extends AppCompatDialogFragment implements View.OnC
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.dialog_form_order, container, false);
+        getDialog().setCanceledOnTouchOutside(false);
         init(view);
         btnCancel.setOnClickListener(this);
         btnYes.setOnClickListener(this);
