@@ -49,16 +49,16 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        ProgressDialog progressDialog = ProgressDialog.show(SplashScreen.this, "", "Please Wait", true, false);
-        receiveID();
-        connectToFirebase();
-        initListJudul();
-        initActionHome();
-        initActionBatch();
-        initActionSpinner();
-        initActionSpinnerModul();
-        initShowProfile();
-        progressDialog.dismiss();
+//        ProgressDialog progressDialog = ProgressDialog.show(SplashScreen.this, "", "Please Wait", true, false);
+//        receiveID();
+//        connectToFirebase();
+//        initListJudul();
+//        initActionHome();
+//        initActionBatch();
+//        initActionSpinner();
+//        initActionSpinnerModul();
+//        initShowProfile();
+//        progressDialog.dismiss();
         LogoLauncher logoLauncher = new LogoLauncher();
         logoLauncher.start();
     }
@@ -66,7 +66,20 @@ public class SplashScreen extends AppCompatActivity {
     private class LogoLauncher extends Thread{
         public void run(){
             try{
+                receiveID();
+                connectToFirebase();
+                initListJudul();
+                initActionHome();
+                initActionBatch();
+                initActionSpinner();
+                initActionSpinnerModul();
+                initShowProfile();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
+            try{
                 sleep(5000);
             }
             catch (Exception e){
