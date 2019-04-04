@@ -102,7 +102,7 @@ public class PaketFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tvDeskripsi.setText(detail.get(position).get(0).toString());
                 tvDurasi.setText(detail.get(position).get(1).toString() +" jam");
-                tvHarga.setText("Rp " +detail.get(position).get(2).toString());
+                tvHarga.setText(detail.get(position).get(2).toString());
                 tvLama.setText(detail.get(position).get(3).toString() +" pertemuan");
             }
 
