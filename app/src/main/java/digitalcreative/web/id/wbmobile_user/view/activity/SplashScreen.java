@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,14 +77,14 @@ public class SplashScreen extends AppCompatActivity {
                 initShowProfile();
             }
             catch (Exception e){
-                e.printStackTrace();
+                Toast.makeText(SplashScreen.this, "Tidak dapat mengakses data", Toast.LENGTH_LONG).show();
             }
-
             try{
                 sleep(5000);
+
             }
             catch (Exception e){
-                e.printStackTrace();
+                Toast.makeText(SplashScreen.this, "Tidak dapat mengakses data", Toast.LENGTH_LONG).show();
             }
             goToBaseActivity();
         }
