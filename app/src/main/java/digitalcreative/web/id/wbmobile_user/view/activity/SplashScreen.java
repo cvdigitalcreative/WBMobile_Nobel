@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.model.Modul;
@@ -41,10 +45,11 @@ public class SplashScreen extends AppCompatActivity {
     ArrayList<List> listDetailPaket;
     List<List> multiList;
     ArrayList<String> listProfile = new ArrayList<>();
-    String user;
+    String user, cekPaket;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    long start, end;
+    TextView tv_connection;
+    ImageView iv_logo, iv_reload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,8 @@ public class SplashScreen extends AppCompatActivity {
 //        initActionSpinnerModul();
 //        initShowProfile();
 //        progressDialog.dismiss();
+        init();
+        clickReload();
         LogoLauncher logoLauncher = new LogoLauncher();
         logoLauncher.start();
     }
@@ -75,25 +82,59 @@ public class SplashScreen extends AppCompatActivity {
                 initActionSpinner();
                 initActionSpinnerModul();
                 initShowProfile();
-            }
-            catch (Exception e){
+          } catch (Exception e){
                 Toast.makeText(SplashScreen.this, "Tidak dapat mengakses data", Toast.LENGTH_LONG).show();
             }
+
             try{
                 sleep(5000);
-
             }
             catch (Exception e){
                 Toast.makeText(SplashScreen.this, "Tidak dapat mengakses data", Toast.LENGTH_LONG).show();
             }
-            goToBaseActivity();
+
+
+            cekPaket(cekPaket);
         }
 
+    }
+
+    private void init(){
+        tv_connection = findViewById(R.id.tv_text);
+        iv_logo = findViewById(R.id.iv_splashscreen);
+        iv_reload = findViewById(R.id.iv_reload);
     }
 
     private void receiveID(){
         user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
         saveString(user, "ID_User");
+    }
+
+    private void cekPaket(String cekPaket){
+        if(cekPaket == null){
+            System.out.println("ini = "+cekPaket);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    iv_logo.setVisibility(View.GONE);
+                    tv_connection.setVisibility(View.VISIBLE);
+                    iv_reload.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+        else
+            goToBaseActivity();
+    }
+
+    private void clickReload(){
+        iv_reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                LogoLauncher logoLauncher = new LogoLauncher();
+                logoLauncher.start();
+            }
+        });
     }
 
     private void connectToFirebase(){
@@ -122,6 +163,8 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(batch);
                     temp.add(tanggal);
                     homeList.add(temp);
+
+                    cekPaket = paket;
                 }
                 saveArrayList(homeList, "List_Home");
             }
@@ -235,12 +278,11 @@ public class SplashScreen extends AppCompatActivity {
         mDatabaseKursus.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String paket = "";
 
                 listJudulModul = new ArrayList<>();
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     listDetailPaket = new ArrayList<>();
-                    paket = dataSnapshot1.child("judul").getValue().toString();
+                    String paket = dataSnapshot1.child("judul").getValue().toString();
                     list.add(paket);
                     for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("modul").getChildren()){
                         ArrayList<String> temp = new ArrayList<>();

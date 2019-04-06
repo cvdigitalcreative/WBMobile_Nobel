@@ -7,8 +7,27 @@
     android:background="#fff"
     tools:context="digitalcreative.web.id.wbmobile_user.view.activity.SplashScreen">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Failed"
+        android:visibility="gone"
+        android:gravity="center"
+        android:id="@+id/tv_text"/>
+
     <ImageView
-        android:id="@+id/splashscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_text"
+        android:id="@+id/iv_reload"
+        android:visibility="gone"
+        android:clickable="true"
+        android:background="@mipmap/ic_reload"
+        />
+
+    <ImageView
+        android:visibility="visible"
+        android:id="@+id/iv_splashscreen"
         android:layout_width="250dp"
         android:layout_height="250dp"
         app:srcCompat="@drawable/warungbelajar"
