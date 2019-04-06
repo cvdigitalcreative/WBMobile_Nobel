@@ -8,25 +8,31 @@
     tools:context="digitalcreative.web.id.wbmobile_user.view.activity.SplashScreen">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Failed"
-        android:visibility="gone"
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="280dp"
         android:gravity="center"
-        android:id="@+id/tv_text"/>
+        android:text="Failed"
+        android:textColor="#000"
+        android:visibility="visible" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/iv_reload"
-        android:visibility="gone"
         android:clickable="true"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:background="@mipmap/ic_reload"
         />
 
     <ImageView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/iv_splashscreen"
         android:layout_width="250dp"
         android:layout_height="250dp"
@@ -37,7 +43,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.512"
-
         tools:layout_editor_absoluteX="76dp"
         tools:layout_editor_absoluteY="-1dp" />
 
