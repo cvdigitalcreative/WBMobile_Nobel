@@ -92,8 +92,6 @@ public class SplashScreen extends AppCompatActivity {
             catch (Exception e){
                 Toast.makeText(SplashScreen.this, "Tidak dapat mengakses data", Toast.LENGTH_LONG).show();
             }
-
-
             cekPaket(cekPaket);
         }
 
@@ -112,7 +110,6 @@ public class SplashScreen extends AppCompatActivity {
 
     private void cekPaket(String cekPaket){
         if(cekPaket == null){
-            System.out.println("ini = "+cekPaket);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -150,21 +147,26 @@ public class SplashScreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String paket = "", batch = "", tanggal = "", judul="";
                 List<String> temp = new ArrayList<>();
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                    paket = dataSnapshot1.getKey();
-                    batch = dataSnapshot1.child("informasi_dasar").child("batch").getValue().toString();
-                    tanggal = dataSnapshot1.child("informasi_dasar").child("tanggal_batch").getValue().toString();
-                    for(int i=0; i<listJudul.size(); i++){
-                        if(listJudul.get(i).get(0).toString().equals(paket)){
-                            judul = listJudul.get(i).get(1).toString();
-                        }
-                    }
-                    temp.add(judul);
-                    temp.add(batch);
-                    temp.add(tanggal);
-                    homeList.add(temp);
 
-                    cekPaket = paket;
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                    batch = dataSnapshot1.getKey();
+                    for(DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()){
+                        paket = dataSnapshot2.getKey();
+                        tanggal = dataSnapshot2.child("informasi_dasar").child("tanggal_batch").getValue().toString();
+
+                        for(int i=0; i<listJudul.size(); i++){
+                            if(listJudul.get(i).get(0).toString().equals(paket)){
+                                judul = listJudul.get(i).get(1).toString();
+                            }
+                        }
+
+                        temp.add(judul);
+                        temp.add(batch);
+                        temp.add(tanggal);
+                        homeList.add(temp);
+                        cekPaket(paket);
+                    }
+
                 }
                 saveArrayList(homeList, "List_Home");
             }
@@ -221,6 +223,9 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String paket = "";
+                judul = new ArrayList<>();
+                detail = new ArrayList<>();
+
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     List<String> temp = new ArrayList<>();
                     paket = dataSnapshot1.child("judul").getValue().toString();

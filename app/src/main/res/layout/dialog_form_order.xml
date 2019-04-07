@@ -26,12 +26,13 @@
         android:layout_margin="10dp">
 
         <TextView
+            android:id="@+id/tv_nama"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
             android:text="Achi Aprilia A"
             android:textColor="#000"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,12 +43,13 @@
             >
 
             <TextView
+                android:id="@+id/tv_paket"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="left|center"
                 android:text="Pengenalan Pemrograman"
                 android:textColor="#000"
-                android:textSize="15sp"
-                android:gravity="left|center"/>
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -57,17 +59,18 @@
                 android:layout_marginLeft="10dp">
 
                 <TextView
+                    android:id="@+id/batch"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="Batch"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    android:gravity="center"/>
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/batch"
+                    android:id="@+id/tv_batch"
                     android:text=""
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/colorPrimary"
@@ -78,14 +81,14 @@
         </LinearLayout>
 
 
-
         <TextView
+            android:id="@+id/tv_deskripsi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
             android:text="Pengenalan Pemrograman belajar mengenai pemrograman dasar"
             android:textColor="#8A8181"
-            android:textSize="14sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -109,13 +112,13 @@
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/tv_harga_paket"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/harga_paket"
                 android:text="Harga"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"

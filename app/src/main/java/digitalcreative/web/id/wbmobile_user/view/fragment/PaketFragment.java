@@ -127,13 +127,32 @@ public class PaketFragment extends Fragment {
         String harga = tvHarga.getText().toString();
         String deskripsi = tvDeskripsi.getText().toString();
         String nama_paket = spinner.getSelectedItem().toString();
+        String batch = "1";
         System.out.println(nama + " " + harga + " " + deskripsi + " " + nama_paket);
+
+        saveString(nama, "Paket_Nama");
+        saveString(harga, "Paket_Harga");
+        saveString(deskripsi, "Paket_Deskripsi");
+        saveString(nama_paket, "Paket_Nama_Paket");
+        saveString(batch, "Paket_Batch");
 
         FragmentManager manager = getFragmentManager();
         FormOrderDialog dialogOrder = new FormOrderDialog();
 //        Bundle bundle = new Bundle();
-//        dialogAdd.setArguments(bundle);
+//        bundle.putString(nama, "Paket_Nama");
+//        bundle.putString(harga, "Paket_Harga");
+//        bundle.putString(deskripsi, "Paket_Deskripsi");
+//        bundle.putString(nama_paket, "Paket_Nama_Paket");
+//        bundle.putString(batch, "Paket_Batch");
+//        dialogOrder.setArguments(bundle);
         dialogOrder.show(manager, dialogOrder.getTag());
+    }
+
+    private void saveString(String str, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, str);
+        editor.apply();     // This line is IMPORTANT !!!
     }
 
 
