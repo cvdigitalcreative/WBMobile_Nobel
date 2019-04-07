@@ -1,6 +1,7 @@
 package digitalcreative.web.id.wbmobile_user.view.adapter;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -43,9 +44,9 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView_Adap
             @Override
             public void onClick(View v) {
                   for (LinearLayout linearLayout : itemViewList){
-                      linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                      linearLayout.setBackgroundResource(R.drawable.rect1);
                   }
-                  holder.linearLayoutCardview.setBackgroundColor(Color.parseColor("#1abc9c"));
+                  holder.linearLayoutCardview.setBackgroundResource(R.drawable.rect5);
             }
         });
     }

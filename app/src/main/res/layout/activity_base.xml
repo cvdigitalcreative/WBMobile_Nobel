@@ -15,12 +15,12 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_height="56dp"
         android:background="@drawable/rect3"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabIndicatorHeight="2dp"
+        android:visibility="visible"
         app:menu="@menu/bottom_navigation"
-        />
+        app:tabIndicatorColor="@android:color/white"
+        app:tabIndicatorHeight="2dp" />
 
 </RelativeLayout>
