@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment {
         setCarouselView(carouselView);
         connectToFirebase();
         initAction();
+        setCarouselView(carouselView);
         cekKonfirmasiPembayaran();
         setBtnKonfirmasi(btnKonfirmasi);
         return view;
