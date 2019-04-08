@@ -1,6 +1,7 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +46,7 @@ public class HomeFragment extends Fragment {
     String no_batch, nama_paket;
     DatabaseReference mDatabaseKursusNobel;
     String ID_User;
-    Button btnKonfirmasi;
+    Button btnKonfirmasi, btnCancel;
     CarouselView carouselView;
     private int[] imagePromo = new int[] {R.drawable.digital_creative, R.drawable.google};
     private String[] titleImagePromo = new String[] {"dc", "google"};
@@ -66,7 +68,50 @@ public class HomeFragment extends Fragment {
         setCarouselView(carouselView);
         cekKonfirmasiPembayaran();
         setBtnKonfirmasi(btnKonfirmasi);
+        setBtnCancel(btnCancel);
+
         return view;
+    }
+
+    private void setBtnCancel(Button btnCancel) {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set title dialog
+        alertDialogBuilder.setTitle("Batalkan Pesanan");
+
+        // set pesan dari dialog
+        alertDialogBuilder
+                .setMessage("Apakah kamu yakin akan membatalkan pesanan ini ?")
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+
+                    }
+                })
+                .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        // membuat alert dialog dari builder
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // menampilkan alert dialog
+        alertDialog.show();
     }
 
     private void setBtnKonfirmasi(Button btnKonfirmasi) {
@@ -94,6 +139,7 @@ public class HomeFragment extends Fragment {
         tv_tanggal = view.findViewById(R.id.tv_tanggal);
         ll_konfirmasi = view.findViewById(R.id.ll_konfirmasi);
         btnKonfirmasi = view.findViewById(R.id.btn_konfirmasi);
+        btnCancel = view.findViewById(R.id.btn_cancel);
     }
 
     private void initData(){

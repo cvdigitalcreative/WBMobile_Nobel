@@ -167,7 +167,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:gravity="right">
+                android:gravity="right"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_konfirmasi"
@@ -177,6 +178,17 @@
                     android:text="Konfirmasi"
                     android:textAlignment="center"
                     android:textColor="#ffff"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/rect2"
+                    android:text="X"
+                    android:textAlignment="center"
+                    android:textColor="#ffff"
+                    android:layout_marginLeft="5dp"
                     android:textSize="12sp" />
 
             </LinearLayout>
