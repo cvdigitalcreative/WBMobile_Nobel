@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v4.app.FragmentManager;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,11 +43,14 @@ public class PaketFragment extends Fragment {
     ArrayList<String> batch = new ArrayList<>();
     RecyclerView_Adapter adapter;
     ArrayList<String> judul = new ArrayList<>();
-    ArrayList<List> detail  = new ArrayList<>();
+    ArrayList<List> detail, listJudul;
+    ArrayList<List> listKonfirmasi = new ArrayList<>();
     Spinner spinner;
     TextView tvDeskripsi, tvLama, tvDurasi, tvHarga;
     Button btnPesan;
     ArrayList<String> listProfile = new ArrayList<>();
+    String nama, harga, nama_paket, no_batch, deskripsi, ID_User;
+    DatabaseReference mDatabaseKursusNobel;
 
     public PaketFragment() {
         // Required empty public constructor
@@ -59,11 +63,17 @@ public class PaketFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paket, container, false);
         init(view);
         initData();
+        connectToFirebase();
+        cekKonfirmasiPembayaran();
         initActionBatch();
         initActionSpinner();
         selectedItemSpinner();
         prosesPesan();
         return view;
+    }
+
+    private void connectToFirebase(){
+        mDatabaseKursusNobel = FirebaseDatabase.getInstance().getReference().child("nobel").child(ID_User).child("kursus");
     }
 
     private void init(View view){
@@ -82,6 +92,9 @@ public class PaketFragment extends Fragment {
         detail = data.getArrayList("List_Detail");
         batch = data.getArrayListString("List_Batch");
         listProfile = data.getArrayListString("List_Profile");
+//        listKonfirmasi = data.getArrayList("List_Konfirmasi");
+        listJudul = data.getArrayList("List_Judul_Real");
+        ID_User = data.getString("ID_User");
     }
 
     private void initActionBatch(){
@@ -117,35 +130,94 @@ public class PaketFragment extends Fragment {
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToOrderDialog();
+                int flag = cekKonfirmasiPesanan();
+                if (flag == 1)
+                    Toast.makeText(getActivity(), "Konfirmasi Terlebih Dahulu", Toast.LENGTH_LONG).show();
+                else{
+                    int pesan = cekDetailPesanan();
+                    if(pesan == 0)
+                        Toast.makeText(getActivity(), "Paket ini Telah Diambil", Toast.LENGTH_LONG).show();
+                    else
+                        goToOrderDialog();
+                }
             }
         });
     }
 
-    private void goToOrderDialog() {
-        String nama = listProfile.get(2);
-        String harga = tvHarga.getText().toString();
-        String deskripsi = tvDeskripsi.getText().toString();
-        String nama_paket = spinner.getSelectedItem().toString();
-        String batch = "1";
-        System.out.println(nama + " " + harga + " " + deskripsi + " " + nama_paket);
+    private void getDetailPesanan(){
+        nama = listProfile.get(2);
+        harga = tvHarga.getText().toString();
+        deskripsi = tvDeskripsi.getText().toString();
+        nama_paket = spinner.getSelectedItem().toString();
+        no_batch = "1";
+    }
 
+    private int cekDetailPesanan(){
+        getDetailPesanan();
+
+        String paket_real = "";
+        String konfirmasi = "Sudah";
+        int pesan = 1;
+        for(int i=0; i<listJudul.size(); i++){
+            if(listJudul.get(i).get(1).equals(nama_paket))
+                paket_real = listJudul.get(i).get(0).toString();
+        }
+        System.out.println(paket_real);
+        System.out.println(listKonfirmasi);
+        for(int i=0; i<listKonfirmasi.size(); i++){
+            if(no_batch.equals(listKonfirmasi.get(i).get(0).toString()) && paket_real.equals(listKonfirmasi.get(i).get(1).toString()) && konfirmasi.equals(listKonfirmasi.get(i).get(2).toString())){
+                pesan = 0;
+            }
+        }
+        return pesan;
+    }
+
+    private void goToOrderDialog() {
         saveString(nama, "Paket_Nama");
         saveString(harga, "Paket_Harga");
         saveString(deskripsi, "Paket_Deskripsi");
         saveString(nama_paket, "Paket_Nama_Paket");
-        saveString(batch, "Paket_Batch");
+        saveString(no_batch, "Paket_Batch");
 
         FragmentManager manager = getFragmentManager();
         FormOrderDialog dialogOrder = new FormOrderDialog();
-//        Bundle bundle = new Bundle();
-//        bundle.putString(nama, "Paket_Nama");
-//        bundle.putString(harga, "Paket_Harga");
-//        bundle.putString(deskripsi, "Paket_Deskripsi");
-//        bundle.putString(nama_paket, "Paket_Nama_Paket");
-//        bundle.putString(batch, "Paket_Batch");
-//        dialogOrder.setArguments(bundle);
         dialogOrder.show(manager, dialogOrder.getTag());
+    }
+
+    private int cekKonfirmasiPesanan(){
+        int flag = 0;
+        for(int i=0; i<listKonfirmasi.size(); i++){
+            if(listKonfirmasi.get(i).get(2).equals("Belum"))
+                flag = 1;
+        }
+        return flag;
+    }
+
+    private void cekKonfirmasiPembayaran(){
+        mDatabaseKursusNobel.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String key_batch = "", key_paket = "", konfirmasi = "";
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    key_batch = dataSnapshot1.getKey();
+                    for(DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()){
+                        ArrayList<String> temp = new ArrayList<>();
+                        key_paket = dataSnapshot2.getKey();
+                        konfirmasi = dataSnapshot2.child("informasi_dasar").child("konfirmasi").getValue().toString();
+
+                        temp.add(key_batch);
+                        temp.add(key_paket);
+                        temp.add(konfirmasi);
+                        listKonfirmasi.add(temp);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void saveString(String str, String key){

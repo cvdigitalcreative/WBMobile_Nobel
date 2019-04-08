@@ -291,6 +291,7 @@
                         android:textSize="12sp"
                         android:textColor="#ffff"
                         android:background="@drawable/rect2"
+                        android:clickable="true"
                         />
                 </LinearLayout>
 

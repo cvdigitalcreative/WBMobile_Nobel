@@ -3,6 +3,8 @@ package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.TextureView;
@@ -12,17 +14,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
+import digitalcreative.web.id.wbmobile_user.model.Pemesanan;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FormOrderDialog extends AppCompatDialogFragment implements View.OnClickListener {
+public class FormOrderDialog extends AppCompatDialogFragment {
     private Button btnCancel, btnYes;
     private TextView tv_nama, tv_paket, tv_batch, tv_deskripsi, tv_harga;
-    private String nama, paket, batch, deskripsi, harga;
+    private String nama, paket, batch, deskripsi, harga, ID_User, paket_real, tanggal_batch;
+    private DatabaseReference dbKursusNobel;
+    private ArrayList<List> listJudul, listBatchLengkap;
 
     public FormOrderDialog() {
         // Required empty public constructor
@@ -35,28 +46,34 @@ public class FormOrderDialog extends AppCompatDialogFragment implements View.OnC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.dialog_form_order, container, false);
         getDialog().setCanceledOnTouchOutside(false);
-        init(view);
         initData();
+        connectToFirebase();
+        init(view);
         initActionForm();
-
-        btnCancel.setOnClickListener(this);
-        btnYes.setOnClickListener(this);
+        setCancel();
+        setYes();
 
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view == btnCancel){
-            getDialog().dismiss();
-        }
-        if(view == btnYes){
-            btnYesClick();
-        }
+    private void setCancel(){
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
     }
 
-    private void btnYesClick() {
-
+    private void setYes(){
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendData();
+                getDialog().dismiss();
+                Toast.makeText(getActivity(), "Pemesanan berhasil. Silahkan Konfirmasi !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void init(View view){
@@ -76,8 +93,25 @@ public class FormOrderDialog extends AppCompatDialogFragment implements View.OnC
         batch = dataSplashScreen.getString("Paket_Batch");
         deskripsi = dataSplashScreen.getString("Paket_Deskripsi");
         harga = dataSplashScreen.getString("Paket_Harga");
+        ID_User = dataSplashScreen.getString("ID_User");
 
-        System.out.println(nama + " " + harga + " " + deskripsi + " " + paket + " " + batch);
+        listJudul = dataSplashScreen.getArrayList("List_Judul_Real");
+        for(int i=0; i<listJudul.size(); i++){
+            if(listJudul.get(i).get(1).toString().equals(paket))
+                paket_real = listJudul.get(i).get(0).toString();
+        }
+
+        listBatchLengkap = dataSplashScreen.getArrayList("List_Batch_Lengkap");
+        for(int i=0; i<listBatchLengkap.size(); i++){
+            if(listBatchLengkap.get(i).get(0).equals(batch))
+                tanggal_batch = listBatchLengkap.get(i).get(1).toString();
+        }
+//        System.out.println(nama + " " + paket + " " + batch + " " + deskripsi + " " + harga + " " + ID_User + " " + paket_real + " " + tanggal_batch);
+    }
+
+    private void connectToFirebase(){
+        dbKursusNobel = FirebaseDatabase.getInstance().getReference().child("nobel").child(ID_User).child("kursus")
+        .child(batch).child(paket_real).child("informasi_dasar");
     }
 
     private void initActionForm(){
@@ -89,6 +123,11 @@ public class FormOrderDialog extends AppCompatDialogFragment implements View.OnC
     }
 
     private void sendData(){
-
+        Pemesanan pemesanan = new Pemesanan();
+        pemesanan.setHarga(harga);
+        pemesanan.setKonfirmasi("Belum");
+        pemesanan.setTanggal_batch(tanggal_batch);
+        pemesanan.setStatus("Belum Berlangsung");
+        dbKursusNobel.setValue(pemesanan);
     }
 }
