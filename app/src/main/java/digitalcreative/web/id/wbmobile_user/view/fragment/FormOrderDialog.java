@@ -106,7 +106,6 @@ public class FormOrderDialog extends AppCompatDialogFragment {
             if(listBatchLengkap.get(i).get(0).equals(batch))
                 tanggal_batch = listBatchLengkap.get(i).get(1).toString();
         }
-//        System.out.println(nama + " " + paket + " " + batch + " " + deskripsi + " " + harga + " " + ID_User + " " + paket_real + " " + tanggal_batch);
     }
 
     private void connectToFirebase(){
@@ -129,5 +128,10 @@ public class FormOrderDialog extends AppCompatDialogFragment {
         pemesanan.setTanggal_batch(tanggal_batch);
         pemesanan.setStatus("Belum Berlangsung");
         dbKursusNobel.setValue(pemesanan);
+    }
+
+    private void goToHome(){
+        HomeFragment homeFragment = new HomeFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_fragment, homeFragment, "home_fragment").commit();
     }
 }

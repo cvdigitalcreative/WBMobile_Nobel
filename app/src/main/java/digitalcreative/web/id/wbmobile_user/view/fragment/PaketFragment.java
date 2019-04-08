@@ -137,8 +137,9 @@ public class PaketFragment extends Fragment {
                     int pesan = cekDetailPesanan();
                     if(pesan == 0)
                         Toast.makeText(getActivity(), "Paket ini Telah Diambil", Toast.LENGTH_LONG).show();
-                    else
+                    else{
                         goToOrderDialog();
+                    }
                 }
             }
         });
