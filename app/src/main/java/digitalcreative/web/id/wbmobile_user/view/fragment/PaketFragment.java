@@ -126,6 +126,14 @@ public class PaketFragment extends Fragment {
         });
     }
 
+    private void cekBundle(){
+        Bundle b = this.getArguments();
+        if(b != null){
+            no_batch = b.getString("Batch_Terpilih");
+        }
+        System.out.println(no_batch);
+    }
+
     private void prosesPesan(){
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +159,9 @@ public class PaketFragment extends Fragment {
         deskripsi = tvDeskripsi.getText().toString();
         nama_paket = spinner.getSelectedItem().toString();
         no_batch = "1";
+
+        cekBundle();
+
     }
 
     private int cekDetailPesanan(){

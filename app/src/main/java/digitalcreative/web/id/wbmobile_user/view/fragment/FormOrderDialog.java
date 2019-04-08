@@ -1,6 +1,7 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,7 @@ import java.util.List;
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.model.Pemesanan;
+import digitalcreative.web.id.wbmobile_user.view.activity.BaseActivity;
 
 
 /**
@@ -71,7 +73,8 @@ public class FormOrderDialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 sendData();
                 getDialog().dismiss();
-                Toast.makeText(getActivity(), "Pemesanan berhasil. Silahkan Konfirmasi !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Pemesanan berhasil. Silahkan Konfirmasi !", Toast.LENGTH_LONG).show();
+                goToHome();
             }
         });
     }
@@ -131,7 +134,7 @@ public class FormOrderDialog extends AppCompatDialogFragment {
     }
 
     private void goToHome(){
-        HomeFragment homeFragment = new HomeFragment();
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_fragment, homeFragment, "home_fragment").commit();
+        Intent intent = new Intent(getActivity(), BaseActivity.class);
+        startActivity(intent);
     }
 }

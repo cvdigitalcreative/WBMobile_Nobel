@@ -31,7 +31,7 @@
                     android:layout_margin="16dp"
                     android:layout_weight="0.2"
                     android:src="@drawable/ic_home"
-                     />
+                    />
 
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:layout_weight="0.2"
                     android:gravity="right"
                     android:src="@drawable/ic_home"
-                     />
+                    />
 
 
             </LinearLayout>
@@ -78,6 +78,7 @@
             android:background="@drawable/ic_launcher_background">
 
             <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carousel"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:fillColor="#FFFFFFFF"
