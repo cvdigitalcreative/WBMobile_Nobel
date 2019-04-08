@@ -22,8 +22,11 @@ import digitalcreative.web.id.wbmobile_user.view.fragment.PaketFragment;
 public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView_Adapter.ViewHolder> {
     List<String> mData;
     private int pos;
+    String no_batch;
     View view;
     List<LinearLayout>itemViewList = new ArrayList<>();
+
+    public RecyclerView_Adapter(){}
     public RecyclerView_Adapter(ArrayList<String> batch) {
         mData = batch;
     }
@@ -49,15 +52,23 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView_Adap
                       linearLayout.setBackgroundResource(R.drawable.rect1);
                 }
                 holder.linearLayoutCardview.setBackgroundResource(R.drawable.rect5);
-                Bundle bundle = new Bundle();
-                bundle.putString("Batch_Terpilih", batch);
-                PaketFragment paketFragment = new PaketFragment();
-                paketFragment.setArguments(bundle);
-                
+//                Bundle bundle = new Bundle();
+//                bundle.putString("Batch_Terpilih", batch);
+//                PaketFragment paketFragment = new PaketFragment();
+//                paketFragment.setArguments(bundle);
+                setBatch(batch);
+                System.out.println(batch);
             }
         });
     }
 
+    public void setBatch(String no_batch){
+        this.no_batch = no_batch;
+    }
+
+    public String getBatch(){
+        return no_batch;
+    }
 
     @Override
     public int getItemCount() {

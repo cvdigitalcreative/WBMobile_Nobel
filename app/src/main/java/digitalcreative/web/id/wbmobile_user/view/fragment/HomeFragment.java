@@ -58,9 +58,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        setCarouselView(carouselView);
         init(view);
         initData();
+        setCarouselView(carouselView);
         connectToFirebase();
         initAction();
         cekKonfirmasiPembayaran();
@@ -79,12 +79,9 @@ public class HomeFragment extends Fragment {
 
     private void goToPaymentConfirmation() {
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         KonfirmasiFragment konfirmasiFragment = new KonfirmasiFragment();
         fragmentTransaction.replace(R.id.container_fragment, konfirmasiFragment);
-
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

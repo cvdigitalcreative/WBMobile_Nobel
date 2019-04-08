@@ -158,10 +158,11 @@ public class PaketFragment extends Fragment {
         harga = tvHarga.getText().toString();
         deskripsi = tvDeskripsi.getText().toString();
         nama_paket = spinner.getSelectedItem().toString();
-        no_batch = "1";
+        //no_batch = "1";
 
-        cekBundle();
-
+        RecyclerView_Adapter adapter = new RecyclerView_Adapter();
+        no_batch = adapter.getBatch();
+        System.out.println(no_batch);
     }
 
     private int cekDetailPesanan(){
