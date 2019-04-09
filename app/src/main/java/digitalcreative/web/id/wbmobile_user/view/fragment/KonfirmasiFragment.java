@@ -110,6 +110,7 @@ public class KonfirmasiFragment extends Fragment {
 
     private void sendImage(){
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Uploading");
         progressDialog.show();
         final String id_image = UUID.randomUUID().toString();

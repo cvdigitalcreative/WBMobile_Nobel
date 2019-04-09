@@ -141,12 +141,19 @@ public class PaketFragment extends Fragment {
                 if (flag == 1)
                     Toast.makeText(getActivity(), "Konfirmasi Terlebih Dahulu", Toast.LENGTH_LONG).show();
                 else{
-                    int pesan = cekDetailPesanan();
-                    if(pesan == 0)
-                        Toast.makeText(getActivity(), "Paket ini Telah Diambil", Toast.LENGTH_LONG).show();
-                    else{
-                        goToOrderDialog();
+                    getDetailPesanan();
+                    if(no_batch==null){
+                        Toast.makeText(getActivity(), "Pilih batch !", Toast.LENGTH_SHORT).show();
                     }
+                    else{
+                        int pesan = cekDetailPesanan();
+                        if(pesan == 0)
+                            Toast.makeText(getActivity(), "Paket ini Telah Diambil", Toast.LENGTH_SHORT).show();
+                        else{
+                            goToOrderDialog();
+                        }
+                    }
+
                 }
             }
         });
@@ -161,8 +168,6 @@ public class PaketFragment extends Fragment {
     }
 
     private int cekDetailPesanan(){
-        getDetailPesanan();
-
         String paket_real = "";
         String konfirmasi = "Sudah";
         int pesan = 1;
@@ -170,8 +175,7 @@ public class PaketFragment extends Fragment {
             if(listJudul.get(i).get(1).equals(nama_paket))
                 paket_real = listJudul.get(i).get(0).toString();
         }
-        System.out.println(paket_real);
-        System.out.println(listKonfirmasi);
+
         for(int i=0; i<listKonfirmasi.size(); i++){
             if(no_batch.equals(listKonfirmasi.get(i).get(0).toString()) && paket_real.equals(listKonfirmasi.get(i).get(1).toString()) && konfirmasi.equals(listKonfirmasi.get(i).get(2).toString())){
                 pesan = 0;
@@ -181,11 +185,12 @@ public class PaketFragment extends Fragment {
     }
 
     private void goToOrderDialog() {
-        saveString(nama, "Paket_Nama");
-        saveString(harga, "Paket_Harga");
-        saveString(deskripsi, "Paket_Deskripsi");
-        saveString(nama_paket, "Paket_Nama_Paket");
-        saveString(no_batch, "Paket_Batch");
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        data.saveString(nama, "Paket_Nama");
+        data.saveString(harga, "Paket_Harga");
+        data.saveString(deskripsi, "Paket_Deskripsi");
+        data.saveString(nama_paket, "Paket_Nama_Paket");
+        data.saveString(no_batch, "Paket_Batch");
 
         FragmentManager manager = getFragmentManager();
         FormOrderDialog dialogOrder = new FormOrderDialog();
@@ -227,13 +232,4 @@ public class PaketFragment extends Fragment {
             }
         });
     }
-
-    private void saveString(String str, String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(key, str);
-        editor.apply();     // This line is IMPORTANT !!!
-    }
-
-
 }
