@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.synnapps.carouselview.CarouselView;
-
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.view.fragment.BantuanFragment;
 import digitalcreative.web.id.wbmobile_user.view.fragment.HomeFragment;

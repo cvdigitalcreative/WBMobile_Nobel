@@ -99,8 +99,9 @@ public class PaketFragment extends Fragment {
 
     private void initActionBatch(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        adapter = new RecyclerView_Adapter(batch);
+        adapter = new RecyclerView_Adapter(batch, getContext());
         recyclerView.setAdapter(adapter);
+
     }
 
     private void initActionSpinner(){
@@ -126,12 +127,10 @@ public class PaketFragment extends Fragment {
         });
     }
 
-    private void cekBundle(){
-        Bundle b = this.getArguments();
-        if(b != null){
-            no_batch = b.getString("Batch_Terpilih");
-        }
-        System.out.println(no_batch);
+    private String getBatchValue(){
+        SharedPreferences retreiveBatch =  getActivity().getSharedPreferences("GET_BATCH" ,getActivity().MODE_PRIVATE);
+        String getBatch = retreiveBatch.getString("getBatch", null);
+        return getBatch;
     }
 
     private void prosesPesan(){
@@ -158,11 +157,7 @@ public class PaketFragment extends Fragment {
         harga = tvHarga.getText().toString();
         deskripsi = tvDeskripsi.getText().toString();
         nama_paket = spinner.getSelectedItem().toString();
-        no_batch = "1";
-
-//        RecyclerView_Adapter adapter = new RecyclerView_Adapter();
-//        no_batch = adapter.getBatch();
-//        System.out.println(no_batch);
+        no_batch = adapter.getBatch();
     }
 
     private int cekDetailPesanan(){
