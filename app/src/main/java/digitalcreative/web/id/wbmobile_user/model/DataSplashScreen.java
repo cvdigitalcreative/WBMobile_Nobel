@@ -17,6 +17,7 @@ import java.util.List;
 
 public class DataSplashScreen {
     SharedPreferences prefs;
+    SharedPreferences.Editor editor;
     Context context;
 
     public DataSplashScreen() {
@@ -24,6 +25,31 @@ public class DataSplashScreen {
 
     public DataSplashScreen(Context context) {
         this.context = context;
+    }
+
+    public void saveArrayListString(ArrayList<String> list, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void saveArrayList(ArrayList<List> list, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public void saveString(String str, String key){
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = prefs.edit();
+        editor.putString(key, str);
+        editor.apply();     // This line is IMPORTANT !!!
     }
 
     public ArrayList<List> getArrayList(String key){

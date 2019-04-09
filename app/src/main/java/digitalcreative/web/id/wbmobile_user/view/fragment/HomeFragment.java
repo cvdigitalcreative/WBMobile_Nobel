@@ -2,6 +2,7 @@ package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +36,7 @@ import java.util.List;
 
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
+import digitalcreative.web.id.wbmobile_user.view.activity.BaseActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,13 +70,12 @@ public class HomeFragment extends Fragment {
         initAction();
         setCarouselView(carouselView);
         cekKonfirmasiPembayaran();
-        setBtnKonfirmasi(btnKonfirmasi);
-        setBtnCancel(btnCancel);
-
+        setBtnKonfirmasi();
+        setBtnCancel();
         return view;
     }
 
-    private void setBtnCancel(Button btnCancel) {
+    private void setBtnCancel() {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,38 +85,34 @@ public class HomeFragment extends Fragment {
     }
 
     private void showDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                getActivity());
-
-        // set title dialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Batalkan Pesanan");
-
-        // set pesan dari dialog
         alertDialogBuilder
                 .setMessage("Apakah kamu yakin akan membatalkan pesanan ini ?")
                 .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(false)
                 .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-
-
+                        mDatabaseKursusNobel.child(no_batch).child(nama_paket).setValue(null);
+                        Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
+                        goToHome();
                     }
                 })
                 .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
                         dialog.cancel();
                     }
                 });
-
-        // membuat alert dialog dari builder
         AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // menampilkan alert dialog
         alertDialog.show();
     }
 
-    private void setBtnKonfirmasi(Button btnKonfirmasi) {
+    private void goToHome(){
+        Intent intent = new Intent(getActivity(), BaseActivity.class);
+        startActivity(intent);
+    }
+
+    private void setBtnKonfirmasi() {
         btnKonfirmasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,8 +188,14 @@ public class HomeFragment extends Fragment {
                 nama_paket = listKonfirmasi.get(i).get(1).toString();
             }
         }
-        System.out.println(listKonfirmasi);
         tampilLinearLayout();
+
+        ArrayList<String> temp = new ArrayList<>();
+        temp.add(no_batch);
+        temp.add(nama_paket);
+        System.out.println(temp);
+        DataSplashScreen data = new DataSplashScreen(getActivity());
+        data.saveArrayListString(temp,"Pembayaran_Belum");
     }
 
     private void tampilLinearLayout(){
@@ -224,6 +228,7 @@ public class HomeFragment extends Fragment {
                         listKonfirmasi.add(temp);
                     }
                 }
+
                 cekKonfirmasi();
             }
 

@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import digitalcreative.web.id.wbmobile_user.R;
+import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.model.Modul;
 
 public class SplashScreen extends AppCompatActivity {
@@ -42,10 +43,9 @@ public class SplashScreen extends AppCompatActivity {
     ArrayList<List> listDetailPaket;
     ArrayList<String> listProfile = new ArrayList<>();
     String user, cekPaket;
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
     TextView tv_connection;
     ImageView iv_logo, iv_reload;
+    DataSplashScreen dataSplashScreen = new DataSplashScreen(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private void receiveID(){
         user = "8I0l8Hb9JuO8Mc9h0JQlX1t9TVN2";
-        saveString(user, "ID_User");
+        dataSplashScreen.saveString(user, "ID_User");
     }
 
     private void cekPaket(String cekPaket){
@@ -154,9 +154,9 @@ public class SplashScreen extends AppCompatActivity {
                         homeList.add(temp);
                         cekPaket(paket);
                     }
-                    System.out.println(homeList);
+//                    System.out.println(homeList);
                 }
-                saveArrayList(homeList, "List_Home");
+                dataSplashScreen.saveArrayList(homeList, "List_Home");
             }
 
             @Override
@@ -179,7 +179,7 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(judul);
                     listJudul.add(temp);
                 };
-                saveArrayList(listJudul, "List_Judul_Real");
+                dataSplashScreen.saveArrayList(listJudul, "List_Judul_Real");
             }
 
             @Override
@@ -204,8 +204,8 @@ public class SplashScreen extends AppCompatActivity {
                     temp.add(tgl);
                     listBatch.add(temp);
                 }
-                saveArrayListString(batch, "List_Batch");
-                saveArrayList(listBatch, "List_Batch_Lengkap");
+                dataSplashScreen.saveArrayListString(batch, "List_Batch");
+                dataSplashScreen.saveArrayList(listBatch, "List_Batch_Lengkap");
             }
 
             @Override
@@ -233,8 +233,8 @@ public class SplashScreen extends AppCompatActivity {
                     judul.add(paket);
                     detail.add(temp);
                 }
-                saveArrayListString(judul, "List_Judul");
-                saveArrayList(detail, "List_Detail");
+                dataSplashScreen.saveArrayListString(judul, "List_Judul");
+                dataSplashScreen.saveArrayList(detail, "List_Detail");
             }
 
             @Override
@@ -269,7 +269,7 @@ public class SplashScreen extends AppCompatActivity {
                     listJudulModul.add(listDetailPaket);
 
                 }
-                saveArrayList(listJudulModul, "List_Judul_Modul");
+                dataSplashScreen.saveArrayList(listJudulModul, "List_Judul_Modul");
             }
 
             @Override
@@ -288,7 +288,7 @@ public class SplashScreen extends AppCompatActivity {
                     String value = dataSnapshot.child(key).getValue().toString();
                     listProfile.add(value);
                 }
-                saveArrayListString(listProfile, "List_Profile");
+                dataSplashScreen.saveArrayListString(listProfile, "List_Profile");
             }
 
             @Override
@@ -317,7 +317,7 @@ public class SplashScreen extends AppCompatActivity {
                         listKonfirmasi.add(temp);
                     }
                 }
-                saveArrayList(listKonfirmasi, "List_Konfirmasi");
+                dataSplashScreen.saveArrayList(listKonfirmasi, "List_Konfirmasi");
             }
 
             @Override
@@ -332,31 +332,5 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(intent);
         this.finish();
     }
-
-    public void saveArrayListString(ArrayList<String> list, String key){
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
-        editor.apply();     // This line is IMPORTANT !!!
-    }
-
-    public void saveArrayList(ArrayList<List> list, String key){
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
-        editor.apply();     // This line is IMPORTANT !!!
-    }
-
-    public void saveString(String str, String key){
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = prefs.edit();
-        editor.putString(key, str);
-        editor.apply();     // This line is IMPORTANT !!!
-    }
-
 }
 
