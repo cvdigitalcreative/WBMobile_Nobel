@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -98,8 +99,15 @@ public class HomeFragment extends Fragment {
                     public void onClick(DialogInterface dialog,int id) {
                         mDatabaseKursusNobel.child(no_batch).child(nama_paket).setValue(null);
                         cekKonfirmasiPembayaran();
-                        Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
-                        goToBaseActivity();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Do something after 5s = 5000ms
+                                Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
+                                goToBaseActivity();
+                            }
+                        }, 1000);
                     }
                 })
                 .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
