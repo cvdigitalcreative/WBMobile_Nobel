@@ -44,7 +44,7 @@ import digitalcreative.web.id.wbmobile_user.view.activity.BaseActivity;
 public class HomeFragment extends Fragment {
     TextView tv_paket, tv_batch, tv_tanggal;
     ArrayList<List> homelist = new ArrayList<>();
-    ArrayList<List> listKonfirmasi;
+    ArrayList<List> listKonfirmasi = new ArrayList<>();
     LinearLayout ll_konfirmasi;
     String no_batch, nama_paket;
     DatabaseReference mDatabaseKursusNobel;
@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
     CarouselView carouselView;
     private int[] imagePromo = new int[] {R.drawable.digital_creative, R.drawable.google};
     private String[] titleImagePromo = new String[] {"dc", "google"};
+    private DataSplashScreen data;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -63,13 +64,15 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        data  = new DataSplashScreen(getActivity());
         init(view);
         initData();
         setCarouselView(carouselView);
         connectToFirebase();
         initAction();
         setCarouselView(carouselView);
-        cekKonfirmasiPembayaran();
+//        cekKonfirmasiPembayaran();
+        cekKonfirmasi();
         setBtnKonfirmasi();
         setBtnCancel();
         return view;
@@ -94,8 +97,9 @@ public class HomeFragment extends Fragment {
                 .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         mDatabaseKursusNobel.child(no_batch).child(nama_paket).setValue(null);
+                        cekKonfirmasiPembayaran();
                         Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
-                        goToHome();
+                        goToBaseActivity();
                     }
                 })
                 .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
@@ -107,7 +111,7 @@ public class HomeFragment extends Fragment {
         alertDialog.show();
     }
 
-    private void goToHome(){
+    private void goToBaseActivity(){
         Intent intent = new Intent(getActivity(), BaseActivity.class);
         startActivity(intent);
     }
@@ -141,8 +145,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void initData(){
-        DataSplashScreen data = new DataSplashScreen(getActivity());
         homelist = data.getArrayList("List_Home");
+        listKonfirmasi = data.getArrayList("List_Konfirmasi");
         ID_User = data.getString("ID_User");
     }
 
@@ -156,9 +160,12 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        tv_paket.setText(nama_paket);
-        tv_batch.setText("Batch "+ no_batch);
-        tv_tanggal.setText(tanggal_batch);
+        if(nama_paket != null && no_batch != null && tanggal_batch != null){
+            tv_paket.setText(nama_paket);
+            tv_batch.setText("Batch "+ no_batch);
+            tv_tanggal.setText(tanggal_batch);
+        }
+
     }
 
     private void setCarouselView(CarouselView carouselView){
@@ -193,7 +200,7 @@ public class HomeFragment extends Fragment {
         ArrayList<String> temp = new ArrayList<>();
         temp.add(no_batch);
         temp.add(nama_paket);
-        System.out.println(temp);
+
         DataSplashScreen data = new DataSplashScreen(getActivity());
         data.saveArrayListString(temp,"Pembayaran_Belum");
     }
@@ -228,8 +235,7 @@ public class HomeFragment extends Fragment {
                         listKonfirmasi.add(temp);
                     }
                 }
-
-                cekKonfirmasi();
+                data.saveArrayList(listKonfirmasi, "List_Konfirmasi");
             }
 
             @Override

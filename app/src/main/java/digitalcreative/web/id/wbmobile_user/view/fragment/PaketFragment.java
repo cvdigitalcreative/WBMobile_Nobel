@@ -64,7 +64,7 @@ public class PaketFragment extends Fragment {
         init(view);
         initData();
         connectToFirebase();
-        cekKonfirmasiPembayaran();
+//        cekKonfirmasiPembayaran();
         initActionBatch();
         initActionSpinner();
         selectedItemSpinner();
@@ -92,7 +92,7 @@ public class PaketFragment extends Fragment {
         detail = data.getArrayList("List_Detail");
         batch = data.getArrayListString("List_Batch");
         listProfile = data.getArrayListString("List_Profile");
-//        listKonfirmasi = data.getArrayList("List_Konfirmasi");
+        listKonfirmasi = data.getArrayList("List_Konfirmasi");
         listJudul = data.getArrayList("List_Judul_Real");
         ID_User = data.getString("ID_User");
     }
