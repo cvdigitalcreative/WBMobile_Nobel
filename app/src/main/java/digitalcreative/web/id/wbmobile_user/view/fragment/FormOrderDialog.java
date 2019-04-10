@@ -164,7 +164,7 @@ public class FormOrderDialog extends AppCompatDialogFragment {
                         listKonfirmasi.add(temp);
                     }
                 }
-                dataSplashScreen.saveArrayList(listKonfirmasi, "List_Konfirmasi");
+                dataSplashScreen.saveArrayList2(listKonfirmasi, "List_Konfirmasi");
             }
 
             @Override

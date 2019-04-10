@@ -207,12 +207,7 @@ public class HomeFragment extends Fragment {
 
     private void tampilLinearLayout(){
         if(no_batch != null && nama_paket != null){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ll_konfirmasi.setVisibility(View.VISIBLE);
-                }
-            });
+            ll_konfirmasi.setVisibility(View.VISIBLE);
         }
     }
 
@@ -235,7 +230,7 @@ public class HomeFragment extends Fragment {
                         listKonfirmasi.add(temp);
                     }
                 }
-                data.saveArrayList(listKonfirmasi, "List_Konfirmasi");
+                data.saveArrayList2(listKonfirmasi, "List_Konfirmasi");
             }
 
             @Override
