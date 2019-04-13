@@ -30,9 +30,10 @@ public class RecyclerView_Adapter extends RecyclerView.Adapter<RecyclerView_Adap
     Context context;
     List<LinearLayout>itemViewList = new ArrayList<>();
 
-    public RecyclerView_Adapter(ArrayList<String> batch, Context context) {
-        mData = batch;
+    public RecyclerView_Adapter(ArrayList<String> mData, Context context) {
+        this.mData = mData;
         this.context = context;
+        this.batch = mData.get(0);
     }
 
     @NonNull

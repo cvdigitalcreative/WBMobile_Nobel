@@ -1,11 +1,17 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +36,8 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +45,8 @@ import java.util.List;
 import digitalcreative.web.id.wbmobile_user.R;
 import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.view.activity.BaseActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +61,9 @@ public class HomeFragment extends Fragment {
     String ID_User;
     Button btnKonfirmasi, btnCancel;
     CarouselView carouselView;
-    private int[] imagePromo = new int[] {R.drawable.digital_creative, R.drawable.google};
+    ArrayList<String> imagePromo;
+    ArrayList<Bitmap> bListPromo;
+//    private int[] imagePromo = new int[] {R.drawable.digital_creative, R.drawable.google};
     private String[] titleImagePromo = new String[] {"dc", "google"};
     private DataSplashScreen data;
 
@@ -96,10 +108,21 @@ public class HomeFragment extends Fragment {
                 .setCancelable(false)
                 .setPositiveButton("Ya",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
+                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setMessage("Loading");
+                        progressDialog.show();
                         mDatabaseKursusNobel.child(no_batch).child(nama_paket).setValue(null);
                         cekKonfirmasiPembayaran();
-                        Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
-                        goToBaseActivity();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Do something after 5s = 5000ms
+                                Toast.makeText(getActivity(), "Pesanan berhasil dibatalkan !", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                goToBaseActivity();
+                            }
+                        }, 1000);
                     }
                 })
                 .setNegativeButton("Tidak",new DialogInterface.OnClickListener() {
@@ -148,6 +171,7 @@ public class HomeFragment extends Fragment {
         homelist = data.getArrayList("List_Home");
         listKonfirmasi = data.getArrayList("List_Konfirmasi");
         ID_User = data.getString("ID_User");
+        imagePromo = data.getArrayListString("Image_Promo");
     }
 
     private void initAction(){
@@ -168,12 +192,26 @@ public class HomeFragment extends Fragment {
 
     }
 
+    private void listImage(){
+        bListPromo = new ArrayList<>();
+        for(int i=0; i<imagePromo.size(); i++){
+            File imgFile = new File(imagePromo.get(i));
+            if(imgFile.exists()){
+                System.out.println("-----------------------------------Ada-----------------------------------------");
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                bListPromo.add(myBitmap);
+            }
+        }
+    }
+
     private void setCarouselView(CarouselView carouselView){
-        carouselView.setPageCount(imagePromo.length);
+        listImage();
+        System.out.println(bListPromo);
+        carouselView.setPageCount(bListPromo.size());
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(imagePromo[position]);
+                imageView.setImageBitmap(bListPromo.get(position));
             }
         });
         carouselView.setImageClickListener(new ImageClickListener() {
@@ -207,12 +245,7 @@ public class HomeFragment extends Fragment {
 
     private void tampilLinearLayout(){
         if(no_batch != null && nama_paket != null){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ll_konfirmasi.setVisibility(View.VISIBLE);
-                }
-            });
+            ll_konfirmasi.setVisibility(View.VISIBLE);
         }
     }
 

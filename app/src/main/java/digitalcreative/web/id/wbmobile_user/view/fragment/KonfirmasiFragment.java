@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,8 +25,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -33,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import digitalcreative.web.id.wbmobile_user.R;
@@ -55,6 +60,8 @@ public class KonfirmasiFragment extends Fragment {
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     StorageReference storageReference;
+    DatabaseReference mDatabaseKursusNobel;
+    ArrayList<List> listKonfirmasi;
 
     public KonfirmasiFragment() {
         // Required empty public constructor
@@ -106,6 +113,7 @@ public class KonfirmasiFragment extends Fragment {
     private void connectToFirebase(){
         mDatabase = FirebaseDatabase.getInstance().getReference().child("nobel").child(uid).child("kursus").child(no_batch).child(nama_paket).child("informasi_dasar");
         storageReference = FirebaseStorage.getInstance().getReference().child("foto_bukti_pembayaran").child(uid);
+        mDatabaseKursusNobel = FirebaseDatabase.getInstance().getReference().child("nobel").child(uid).child("kursus");
     }
 
     private void sendImage(){
@@ -119,9 +127,6 @@ public class KonfirmasiFragment extends Fragment {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 mDatabase.child("konfirmasi").setValue("Sudah");
                 mDatabase.child("harga_dibayar").setValue(nominal_uang);
-                progressDialog.dismiss();
-                Toast.makeText(getActivity(), "Konfirmasi pembayaran berhasil !", Toast.LENGTH_SHORT).show();
-                goToHome();
 
                 storageReference.child(id_image).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -131,13 +136,26 @@ public class KonfirmasiFragment extends Fragment {
                         mDatabase.child("foto_bukti_pembayaran").setValue(usableUrl);
                     }
                 });
+
+                cekKonfirmasiPembayaran();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Do something after 5s = 5000ms
+                        Toast.makeText(getActivity(), "Konfirmasi pembayaran berhasil !", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        goToBaseActivity();
+                    }
+                }, 2000);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Gagal Upload !", Toast.LENGTH_SHORT).show();
-                goToHome();
+                goToBaseActivity();
             }
         });
     }
@@ -199,7 +217,37 @@ public class KonfirmasiFragment extends Fragment {
         }
     }
 
-    private void goToHome(){
+    private void cekKonfirmasiPembayaran(){
+        mDatabaseKursusNobel.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String key_batch = "", key_paket = "", konfirmasi = "";
+                listKonfirmasi = new ArrayList<>();
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    key_batch = dataSnapshot1.getKey();
+                    for(DataSnapshot dataSnapshot2 : dataSnapshot1.getChildren()){
+                        ArrayList<String> temp = new ArrayList<>();
+                        key_paket = dataSnapshot2.getKey();
+                        konfirmasi = dataSnapshot2.child("informasi_dasar").child("konfirmasi").getValue().toString();
+
+                        temp.add(key_batch);
+                        temp.add(key_paket);
+                        temp.add(konfirmasi);
+                        listKonfirmasi.add(temp);
+                    }
+                }
+                DataSplashScreen data = new DataSplashScreen(getActivity());
+                data.saveArrayList(listKonfirmasi, "List_Konfirmasi");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void goToBaseActivity(){
         Intent intent = new Intent(getActivity(), BaseActivity.class);
         startActivity(intent);
     }

@@ -1,8 +1,10 @@
 package digitalcreative.web.id.wbmobile_user.view.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -122,11 +124,24 @@ public class FormOrderDialog extends AppCompatDialogFragment {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Loading");
+                progressDialog.show();
                 sendData();
                 cekKonfirmasi();
-                getDialog().dismiss();
-                Toast.makeText(getActivity(), "Pemesanan berhasil. Silahkan Konfirmasi !", Toast.LENGTH_LONG).show();
-                goToBaseActivity();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+//                        System.out.println("masuk");
+                        Toast.makeText(getActivity(), "Pemesanan berhasil. Silahkan Konfirmasi !", Toast.LENGTH_LONG).show();
+                        getDialog().dismiss();
+                        progressDialog.dismiss();
+                        goToBaseActivity();
+                    }
+                }, 2000);
             }
         });
     }

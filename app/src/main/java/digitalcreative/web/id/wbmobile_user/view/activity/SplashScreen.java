@@ -1,9 +1,14 @@
 package digitalcreative.web.id.wbmobile_user.view.activity;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,13 +22,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +47,10 @@ import digitalcreative.web.id.wbmobile_user.model.DataSplashScreen;
 import digitalcreative.web.id.wbmobile_user.model.Modul;
 
 public class SplashScreen extends AppCompatActivity {
-    DatabaseReference mDatabaseKursusNobel, mDatabaseKursus, mDatabaseBatch, mDatabaseProfile;
+    DatabaseReference mDatabaseKursusNobel, mDatabaseKursus, mDatabaseBatch, mDatabaseProfile, mDatabaseImage;
     ArrayList<List> listJudul, listJudulModul, listBatch, homeList, listKonfirmasi;
     ArrayList<String> batch, judul, list;
+    ArrayList<String> imagePromo = new ArrayList<>();
     ArrayList<List> detail;
     ArrayList<List> listDetailPaket;
     ArrayList<String> listProfile = new ArrayList<>();
@@ -46,6 +58,8 @@ public class SplashScreen extends AppCompatActivity {
     TextView tv_connection;
     ImageView iv_logo, iv_reload;
     DataSplashScreen dataSplashScreen = new DataSplashScreen(this);
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +76,7 @@ public class SplashScreen extends AppCompatActivity {
             try{
                 receiveID();
                 connectToFirebase();
+                imagePromo();
                 initListJudul();
                 initActionHome();
                 initActionBatch();
@@ -126,6 +141,7 @@ public class SplashScreen extends AppCompatActivity {
         mDatabaseKursus = FirebaseDatabase.getInstance().getReference().child("materi_kursus");
         mDatabaseBatch = FirebaseDatabase.getInstance().getReference().child("batch");
         mDatabaseProfile = FirebaseDatabase.getInstance().getReference().child("nobel").child(user).child("profile_nobel");
+        mDatabaseImage = FirebaseDatabase.getInstance().getReference().child("promo");
     }
 
     private void initActionHome(){
@@ -325,6 +341,87 @@ public class SplashScreen extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void imagePromo(){
+        mDatabaseImage.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String url_foto1 = dataSnapshot.child("url_foto1").getValue().toString();
+                String url_foto2 = dataSnapshot.child("url_foto2").getValue().toString();
+                String url_foto3 = dataSnapshot.child("url_foto3").getValue().toString();
+
+                tryDownloading(url_foto1, "Foto1.jpg");
+                tryDownloading(url_foto2, "Foto2.jpg");
+                tryDownloading(url_foto3, "Foto3.jpg");
+
+                dataSplashScreen.saveArrayListString(imagePromo, "Image_Promo");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void tryDownloading(String url, final String nama_file){
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReferenceFromUrl(url);
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String url = uri.toString();
+                createDirectoryAndSaveFile(nama_file, url);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    public void downloadFile(Context context, String file_name, String destinantion_directory, String url){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setDestinationInExternalFilesDir(context, destinantion_directory, file_name);
+        System.out.println(destinantion_directory);
+        downloadManager.enqueue(request);
+    }
+
+    private void createDirectoryAndSaveFile(String file_name, String url) {
+
+        File direct = new File("/Download");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+
+        File file = new File(new File("/Download"), file_name);
+        if (file.exists()) {
+            file.delete();
+        }
+
+        imagePromo.add(file.toString());
+
+        DownloadManager downloadManager = (DownloadManager) SplashScreen.this.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setDestinationInExternalFilesDir(SplashScreen.this, file.toString(), file_name);
+        downloadManager.enqueue(request);
+
+//        try {
+//            FileOutputStream out = new FileOutputStream(file);
+//            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//            out.flush();
+//            out.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public void goToBaseActivity(){
